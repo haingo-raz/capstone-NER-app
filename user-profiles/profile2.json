@@ -1,0 +1,59 @@
+{
+    "meal_plan_for_num_peope": 1,
+    "health_goals": ["Maintain weight", "Improve overall health", "Increase energy levels"],
+    "meal_history_overview": {
+      "breakfast": ["whole wheat toast with avocado", "scrambled eggs with spinach", "Greek yogurt with berries"],
+      "lunch": ["grilled chicken Caesar salad", "quinoa and black bean salad"],
+      "dinner": ["grilled salmon with steamed vegetables", "stir-fried tofu with mixed vegetables"],
+      "snacks": ["carrot sticks with hummus", "mixed nuts"]
+    },
+    "eating_style": "Balanced diet",
+    "dietary_needs": ["None"],
+    "other_food_restrictions": ["None"],
+    "nutrition_preferences": ["Balanced macronutrients", "Whole foods", "Moderate portion sizes"],
+    "meat_order_preference": ["Poultry", "Fish", "Lean cuts of Beef"],
+    "seafood_order_preference": ["Salmon", "Shrimp", "Tilapia"],
+    "plant_based_order_preference": ["Legumes", "Tofu", "Quinoa"],
+    "foods_not_eaten": ["None"],
+    "breakfast_preferences": ["Whole grains", "Lean protein sources"],
+    "lunch_dinner_preferences": ["Salads", "Grilled or baked dishes", "Vegetarian options"],
+    "snack_preferences": ["Fresh fruits", "Raw vegetables", "Nuts and seeds"],
+    "meal_information": [
+      {
+        "breakfast": true,
+        "breakfast_preparation_time": "15 minutes"
+      },
+      {
+        "breakfast_to_lunch_snack": true,
+        "breakfast_to_lunch_snack_preparation_time": "5 minutes"
+      },
+      {
+        "lunch": true,
+        "lunch_preparation_time": "20 minutes"
+      },
+      {
+        "lunch_to_dinner_snack": true,
+        "lunch_to_dinner_snack_preparation_time": "10 minutes"
+      },
+      {
+        "dinner": true,
+        "dinner_preparation_time": "25 minutes"
+      }
+    ],
+    "cooking_frequency": "4 to 5 times per week",
+    "leftovers_and_recipe_repetition": {
+      "repeating_recipes": "I’m comfortable with repeating the same recipe 2-3 times during the week.",
+      "leftovers": "I'm fine with cooking ahead and eating leftovers for up to 2 days."
+    },
+    "kitchen_appliances": ["Oven", "Stove", "Microwave"],
+    "grocery_shopping_method": "In-store",
+    "grocery_stores": ["Local farmer's market", "Whole Foods", "Trader Joe's"],
+    "non_preferred_stores_or_brands": ["None"],
+    "delivery_instructions": "Please leave at the front porch if no one is available to receive the delivery.",
+    "contact_info": {
+      "name": "Emily",
+      "email": "emily@example.com",
+      "phone": "987-654-3210",
+      "delivery_address": "789 Elm St, Anytown, USA"
+    }
+  }

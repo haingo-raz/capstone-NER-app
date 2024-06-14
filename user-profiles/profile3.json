@@ -1,0 +1,60 @@
+{
+    "meal_plan_for_num_peope": 1,
+    "health_goals": ["Increase muscle mass", "Improve digestion", "Boost immunity"],
+    "meal_history_overview": {
+      "breakfast": ["smoothie", "oatmeal with fruits", "Greek yogurt with honey"],
+      "lunch": ["grilled chicken salad", "quinoa bowl"],
+      "dinner": ["salmon with roasted vegetables", "stir-fried tofu with broccoli"],
+      "snacks": ["almonds", "apple slices with peanut butter"]
+    },
+    "eating_style": "Low carb",
+    "dietary_needs": ["Gluten-Free"],
+    "other_food_restrictions": ["Shellfish"],
+    "nutrition_preferences": ["High protein (>25g)", "Low carb", "Gut friendly"],
+    "meat_order_preference": ["Poultry", "Beef + Bison", "Pork", "Lamb"],
+    "seafood_order_preference": ["Salmon", "Tuna", "Trout"],
+    "plant_based_order_preference": ["Tofu + Tempeh", "Legumes", "Nuts + Seeds"],
+    "foods_not_eaten": ["Mushrooms", "Shellfish"],
+    "breakfast_preferences": ["Smoothies", "Oatmeal"],
+    "lunch_dinner_preferences": ["Salads", "Bowls", "Grilled dishes"],
+    "snack_preferences": ["Nuts", "Fruit with nut butter"],
+    "meal_information": [
+      {
+        "breakfast": true,
+        "breakfast_preparation_time": "10 minutes"
+      },
+      {
+        "breakfast_to_lunch_snack": true,
+        "breakfast_to_lunch_snack_preparation_time": "5 minutes"
+      },
+      {
+        "lunch": true,
+        "lunch_preparation_time": "20 minutes"
+      },
+      {
+        "lunch_to_dinner_snack": true,
+        "lunch_to_dinner_snack_preparation_time": "5 minutes"
+      },
+      {
+        "dinner": true,
+        "dinner_preparation_time": "25 minutes"
+      }
+    ],
+    "cooking_frequency": "5 to 6 times per week",
+    "leftovers_and_recipe_repetition": {
+      "repeating_recipes": "I’m comfortable with repeating the same recipe 2-3 times during the week.",
+      "leftovers": "I'm fine with cooking ahead and eating leftovers for up to 2 days."
+    },
+    "kitchen_appliances": ["Microwave", "Oven", "Stove", "Blender"],
+    "grocery_shopping_method": "In-store and Online",
+    "grocery_stores": ["Whole Foods", "Trader Joe's"],
+    "non_preferred_stores_or_brands": ["Walmart"],
+    "delivery_instructions": "Leave at the front door if no one answers.",
+    "contact_info": {
+      "name": "John",
+      "email": "john@example.com",
+      "phone": "987-654-3210",
+      "delivery_address": "789 Elm St, Anytown, USA"
+    }
+  }
+  
