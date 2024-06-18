@@ -1,31 +1,25 @@
 import streamlit as st
 import json
-from docx import Document
-from io import BytesIO
+import openai
 
-# Function to create Word document from user profile
-def create_word_doc(user_profile):
-    doc = Document()
-    doc.add_heading('User Profile', 0)
+# Set your OpenAI API key
+openai.api_key = 'your-openai-api-key'
 
-    def add_dict_to_doc(d, doc, level=0):
-        for key, value in d.items():
-            if isinstance(value, dict):
-                doc.add_heading(key, level=level + 1)
-                add_dict_to_doc(value, doc, level + 1)
-            elif isinstance(value, list):
-                doc.add_heading(key, level=level + 1)
-                for item in value:
-                    if isinstance(item, dict):
-                        add_dict_to_doc(item, doc, level + 2)
-                    else:
-                        doc.add_paragraph(str(item))
-            else:
-                doc.add_paragraph(f"{key}: {value}")
-
-    add_dict_to_doc(user_profile, doc)
+# Function to get food recommendations from GPT-3.5
+def get_food_recommendations(user_profile, recommendation_type):
+    prompt = f"Based on the following user profile, provide a {recommendation_type}.\n\nUser Profile: {json.dumps(user_profile, indent=2)}"
     
-    return doc
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=500,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    )
+
+    recommendations = response.choices[0].text.strip()
+    return recommendations
 
 # Title and Introduction
 st.title("Foodeasy - Personalized Meal Planning Assistant")
@@ -143,118 +137,44 @@ snack_preferences = st.multiselect(
 # Cooking and meal preparation habits
 st.markdown("**Let's talk about your meals and how much time you spend cooking or preparing them. ⏲️**")
 breakfast_time = st.number_input("Do you usually have breakfast? 🍳 How much time do you spend making it? (minutes)", min_value=0, step=1)
-morning_snack_time = st.number_input("Do you usually have a snack between breakfast and lunch? 🍏 How much time do you spend making it? (minutes)", min_value=0, step=1)
 lunch_time = st.number_input("Do you usually have lunch? 🥪 How much time do you spend making it? (minutes)", min_value=0, step=1)
-afternoon_snack_time = st.number_input("Do you usually have a snack between lunch and dinner? 🍎 How much time do you spend making it? (minutes)", min_value=0, step=1)
 dinner_time = st.number_input("Do you usually have dinner? 🍝 How much time do you spend making it? (minutes)", min_value=0, step=1)
+snack_time = st.number_input("Do you usually have snacks? 🍏 How much time do you spend preparing them? (minutes)", min_value=0, step=1)
 
-# Cooking frequency
-st.markdown("**How often do you cook at home? 👩🍳**")
-cooking_frequency = st.radio(
-    "Select your cooking frequency:",
-    ["Every day", "4 to 5 times per week", "2 to 3 times per week", "Once per week"]
-)
+## Meal recommendation type selection
+st.markdown("**Finally, what type of meal recommendation are you looking for? 🍽️**")
+custom_recommendation_type = st.text_area("Type your custom recommendation type:", height=100)
+if custom_recommendation_type.strip() == "":
+    st.warning("Please enter a valid custom recommendation type.")
+else:
+    recommendation_type = custom_recommendation_type.strip()
 
-# Preferences for leftovers and repeating recipes
-st.markdown("**How do you feel about leftovers and repeating recipes? 🍲**")
-leftovers_preference = st.radio(
-    "Select your preference for leftovers:",
-    ["Love them!", "Like them", "Neutral", "Dislike them", "Hate them"]
-)
 
-repeating_recipes_preference = st.radio(
-    "How do you feel about repeating recipes?",
-    ["Love it!", "Like it", "Neutral", "Dislike it", "Hate it"]
-)
-
-# Kitchen appliances
-st.markdown("**Which kitchen appliances do you have? 🍽️**")
-kitchen_appliances = st.multiselect(
-    "Select your kitchen appliances:",
-    ["Oven", "Stove", "Microwave", "Toaster", "Blender", "Food Processor", "Slow Cooker", "Instant Pot", "Air Fryer", "Grill", "None"]
-)
-
-# Grocery shopping preferences
-st.markdown("**How do you like to shop for groceries? 🛒**")
-grocery_shopping_method = st.radio(
-    "Select your grocery shopping method:",
-    ["In-store", "Online", "Both"]
-)
-
-grocery_stores = st.multiselect(
-    "Select your preferred grocery stores:",
-    ["Local farmer's market", "Whole Foods", "Trader Joe's", "Costco", "Walmart", "Target", "Kroger", "Other"]
-)
-
-non_preferred_stores = st.text_area("Are there any stores or brands you prefer not to use?")
-
-# Delivery instructions and contact information
-st.markdown("**Any delivery instructions or contact information we should know about? 📦**")
-delivery_instructions = st.text_area("Please specify any delivery instructions:")
-
-contact_name = st.text_input("Name:")
-contact_email = st.text_input("Email:")
-contact_phone = st.text_input("Phone:")
-contact_address = st.text_input("Delivery Address:")
-
-# Create user profile
-if st.button("Submit"):
+# Generate recommendations based on user profile
+if st.button("Get Recommendations"):
     user_profile = {
-        "health_goals": health_goals + [other_goal] if "Other (let us know!) 📝" in health_goals else health_goals,
-        "meal_history_overview": {
-            "breakfast": breakfast.split(', '),
-            "lunch": lunch.split(', '),
-            "dinner": dinner.split(', '),
-            "snacks": snacks.split(', ')
-        },
-        "eating_style": other_eating_style if eating_style == "Other (please tell us more!)" else eating_style,
+        "health_goals": health_goals,
+        "breakfast": breakfast,
+        "lunch": lunch,
+        "dinner": dinner,
+        "snacks": snacks,
+        "eating_style": eating_style,
         "dietary_needs": dietary_needs,
-        "other_food_restrictions": other_restrictions,
         "nutrition_preferences": nutrition_preferences,
-        "meat_order_preference": meat_preferences,
-        "seafood_order_preference": seafood_preferences,
-        "plant_based_protein_order_preference": plant_protein_preferences,
-        "foods_not_eaten": disliked_foods,
+        "meat_preferences": meat_preferences,
+        "seafood_preferences": seafood_preferences,
+        "plant_protein_preferences": plant_protein_preferences,
+        "disliked_foods": disliked_foods,
         "breakfast_preferences": breakfast_preferences,
         "lunch_dinner_preferences": lunch_dinner_preferences,
         "snack_preferences": snack_preferences,
-        "meal_information": [
-            {"breakfast": bool(breakfast_time), "breakfast_preparation_time": f"{breakfast_time} minutes"},
-            {"breakfast_to_lunch_snack": bool(morning_snack_time), "breakfast_to_lunch_snack_preparation_time": f"{morning_snack_time} minutes"},
-            {"lunch": bool(lunch_time), "lunch_preparation_time": f"{lunch_time} minutes"},
-            {"lunch_to_dinner_snack": bool(afternoon_snack_time), "lunch_to_dinner_snack_preparation_time": f"{afternoon_snack_time} minutes"},
-            {"dinner": bool(dinner_time), "dinner_preparation_time": f"{dinner_time} minutes"}
-        ],
-        "cooking_frequency": cooking_frequency,
-        "leftovers_and_recipe_repetition": {
-            "repeating_recipes": repeating_recipes_preference,
-            "leftovers": leftovers_preference
-        },
-        "kitchen_appliances": kitchen_appliances,
-        "grocery_shopping_method": grocery_shopping_method,
-        "grocery_stores": grocery_stores,
-        "non_preferred_stores_or_brands": non_preferred_stores,
-        "delivery_instructions": delivery_instructions,
-        "contact_info": {
-            "name": contact_name,
-            "email": contact_email,
-            "phone": contact_phone,
-            "delivery_address": contact_address
-        }
+        "breakfast_time": breakfast_time,
+        "lunch_time": lunch_time,
+        "dinner_time": dinner_time,
+        "snack_time": snack_time
     }
-    
-    # Create the Word document
-    doc = create_word_doc(user_profile)
-    buffer = BytesIO()
-    doc.save(buffer)
-    buffer.seek(0)
 
-    st.success("Your profile has been created! 🎉")
-    
-    # Create a download button for the Word document
-    st.download_button(
-        label="Download Profile as Word Document",
-        data=buffer,
-        file_name="user_profile.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    )
+    recommendations = get_food_recommendations(user_profile, recommendation_type.lower())
+
+    st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
+    st.write(recommendations)
