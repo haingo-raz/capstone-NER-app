@@ -236,7 +236,7 @@ if st.button("Submit"):
         },
         "Other Restrictions": validated_other_restrictions if "validated_other_restrictions" in locals() else other_restrictions,
         "Disliked Foods": validated_disliked_foods if "validated_disliked_foods" in locals() else disliked_foods,
-        "Budget Considerations": validated_budget_info if "validated_budget_info" in locals() else budget_info,
+        "Budget Considerations": validated_budget_info if "validated_budget_info" in locals() else budget_info, # Use budget_info here
         "Allergies and Medical Conditions": validated_allergies_conditions if "validated_allergies_conditions" in locals() else allergies_conditions
     }
 
