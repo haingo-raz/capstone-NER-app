@@ -21,6 +21,26 @@ def get_food_recommendations(user_profile, recommendation_type):
     recommendations = response.choices[0].text.strip()
     return recommendations
 
+# Function to validate and correct user inputs using GPT-3.5
+def validate_and_correct_input(input_text, input_type):
+    if not input_text.strip():
+        return False, input_text
+    prompt = f"Validate and correct the following input as a valid {input_type}. If it's invalid or meaningless, respond with 'invalid'.\n\nInput: {input_text}"
+    
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    )
+    
+    corrected_input = response.choices[0].text.strip()
+    if corrected_input.lower() == 'invalid':
+        return False, input_text
+    return True, corrected_input
+
 # Title and Introduction
 st.title("Foodeasy - Personalized Meal Planning Assistant")
 st.markdown("""
@@ -149,9 +169,8 @@ if custom_recommendation_type.strip() == "":
 else:
     recommendation_type = custom_recommendation_type.strip()
 
-
-# Generate recommendations based on user profile
-if st.button("Get Recommendations"):
+# Submit button and feedback
+if st.button("Submit and Get Recommendations"):
     user_profile = {
         "health_goals": health_goals,
         "breakfast": breakfast,
@@ -174,7 +193,59 @@ if st.button("Get Recommendations"):
         "snack_time": snack_time
     }
 
-    recommendations = get_food_recommendations(user_profile, recommendation_type.lower())
+    # Validate and correct user inputs before sending to GPT-3.5
+    valid_inputs = True
+    invalid_fields = []
+    corrected_profile = {}
+    for key, value in user_profile.items():
+        if isinstance(value, str):
+            is_valid, corrected_value = validate_and_correct_input(value, key.replace('_', ' '))
+            if not is_valid:
+                invalid_fields.append(key.replace('_', ' '))
+                valid_inputs = False
+            else:
+                corrected_profile[key] = corrected_value
+        elif isinstance(value, list):
+            corrected_list = []
+            for item in value:
+                is_valid, corrected_value = validate_and_correct_input(item, key.replace('_', ' '))
+                if not is_valid:
+                    invalid_fields.append(f"{key.replace('_', ' ')}: {item}")
+                    valid_inputs = False
+                else:
+                    corrected_list.append(corrected_value)
+            corrected_profile[key] = corrected_list
+        else:
+            corrected_profile[key] = value
 
-    st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
-    st.write(recommendations)
+    if valid_inputs:
+        recommendations = get_food_recommendations(corrected_profile, recommendation_type.lower())
+        st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
+        st.write(recommendations)
+    else:
+        st.error("Please correct the invalid inputs: " + ", ".join(invalid_fields))
+# Submit button
+if st.button("Submit"):
+    # Collect all user inputs
+    user_profile = {
+        "Overview of Usual Meals": {
+            "Breakfast": validated_breakfast if "validated_breakfast" in locals() else breakfast,
+            "Lunch": validated_lunch if "validated_lunch" in locals() else lunch,
+            "Dinner": validated_dinner if "validated_dinner" in locals() else dinner,
+            "Snacks": validated_snacks if "validated_snacks" in locals() else snacks
+        },
+        "Other Restrictions": validated_other_restrictions if "validated_other_restrictions" in locals() else other_restrictions,
+        "Disliked Foods": validated_disliked_foods if "validated_disliked_foods" in locals() else disliked_foods,
+        "Budget Considerations": validated_budget_info if "validated_budget_info" in locals() else budget_info,
+        "Allergies and Medical Conditions": validated_allergies_conditions if "validated_allergies_conditions" in locals() else allergies_conditions
+    }
+
+    # Further processing or API calls can be added here
+
+    # Display success message
+    st.subheader("Your information has been submitted successfully!")
+
+# Reset button
+if st.button("Reset"):
+    st.experimental_rerun()
+
