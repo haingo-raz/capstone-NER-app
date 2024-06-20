@@ -4,6 +4,11 @@ import spacy
 # Load our custom model
 nlp_ner = spacy.load("../NER/model-best")
 
+# Add the 'sentencizer' component to the pipeline
+# Add a sentence segmentation component to the SpaCy pipeline
+# Sentencizer uses punctuation to determine sentence boundaries
+nlp_ner.add_pipe('sentencizer')
+
 # Initialize the variables that will hold the input after NER implementation
 breakfast_ner = []
 lunch_ner = []
@@ -47,12 +52,31 @@ snacks = st.text_area("Snacks: 🍏", key="snacks")
 
 # Handle the food input to only return the food items based on the custom SpaCy NER model
 def process_input(text):
-    result = []
+    result = [] # The processed input is saved here
     doc = nlp_ner(text.lower())
+    negation_words = ['not', 'no', 'but', 'dislike', 'hate']
+    liked_items = []
+    disliked_items = []
 
-    for ent in doc.ents:
-        if ent.label_ == 'FOOD':
-            result.append(ent.text)
+    # Split the text into sentences to handle negation more accurately
+    for sent in doc.sents:
+        negation = False
+        for token in sent:
+            # Check if the current token is a negation word
+            if token.lower_ in negation_words:
+                negation = True
+            # Check if the token is an entity and its label is FOOD
+            if token.ent_type_ == 'FOOD':
+                if negation:
+                    disliked_items.append(token.text)
+                else:
+                    liked_items.append(token.text)
+        # Reset negation for the next sentence
+        negation = False
+
+    # Filter out disliked items from liked items
+    result = [item for item in liked_items if item not in disliked_items]
+
     return result
 
 # Submit button and feedback
