@@ -1,0 +1,82 @@
+seafood
+meat
+eggs
+peanut
+soy
+Beef
+meatballs
+ground beef
+Bison
+Poultry
+grilled chicken
+chicken
+ground turkey
+Pork
+carnitas
+ham
+Lamb
+Fish
+Salmon
+Lox
+shrimp
+crab
+lobster
+clams
+oyster
+mussel
+squid
+octopus
+Tofu
+Tempeh
+Beans
+Lentils
+Black beans
+lentil dal
+chorizo
+tomatoes
+eggplants
+mushrooms
+cilantro
+bell pepper
+potato
+garlic
+onions
+sandwiches
+wraps
+smoothies
+baked goods
+cereal
+coffee 
+tea
+oat
+oatmeal
+granola
+yogurt
+bowls
+pasta
+pastas
+pizza
+pizzas
+salads
+burger
+burgers
+tacos
+chips 
+puffs
+popcorn
+juice
+crackers
+pretzels
+dried fruits
+smoothies
+fruit
+veggies
+cheese
+bars
+jerky
+pickles
+olives
+vinegar
+nuts
+seeds
+trail mix
