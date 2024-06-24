@@ -3,22 +3,23 @@ import json
 import openai
 
 # Set your OpenAI API key
-openai.api_key = 'your-openai-api-key'
+openai.api_key = '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'
 
 # Function to get food recommendations from GPT-3.5
 def get_food_recommendations(user_profile, recommendation_type):
     prompt = f"Based on the following user profile, provide a {recommendation_type}.\n\nUser Profile: {json.dumps(user_profile, indent=2)}"
     
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
         max_tokens=500,
-        n=5,  # Get multiple recommendations to choose from
-        stop=None,
         temperature=0.7,
     )
 
-    recommendations = [response.choices[i].text.strip() for i in range(5)]
+    recommendations = [choice['message']['content'].strip() for choice in response.choices]
     return recommendations
 
 # Title and Introduction
@@ -149,7 +150,6 @@ if custom_recommendation_type.strip() == "":
 else:
     recommendation_type = custom_recommendation_type.strip()
 
-
 # Generate recommendations based on user profile
 if st.button("Get Recommendations"):
     user_profile = {
@@ -181,5 +181,5 @@ if st.button("Get Recommendations"):
     for index, recommendation in enumerate(recommendations):
         st.write(f"**Recommendation {index + 1}:** {recommendation}")
         st.write("Feedback:")
-        st.button("👍")  
-        st.button("👎")  
+        st.button("👍", key=f"like_{index}")  
+        st.button("👎", key=f"dislike_{index}")  
