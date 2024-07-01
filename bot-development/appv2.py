@@ -1,6 +1,13 @@
 import streamlit as st
+import spacy
 import json
 import openai
+
+# Load our custom NER model
+nlp_ner = spacy.load("../NER/model-best")
+
+# Add the 'sentencizer' component to the pipeline
+nlp_ner.add_pipe('sentencizer')
 
 # Set your OpenAI API key
 openai.api_key = 'your-openai-api-key'
@@ -21,26 +28,36 @@ def get_food_recommendations(user_profile, recommendation_type):
     recommendations = response.choices[0].text.strip()
     return recommendations
 
-# Function to validate and correct user inputs using GPT-3.5
-def validate_and_correct_input(input_text, input_type):
-    if not input_text.strip():
-        return False, input_text
-    prompt = f"Validate and correct the following input as a valid {input_type}. If it's invalid or meaningless, respond with 'invalid'.\n\nInput: {input_text}"
-    
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=50,
-        n=1,
-        stop=None,
-        temperature=0.7,
-    )
-    
-    corrected_input = response.choices[0].text.strip()
-    if corrected_input.lower() == 'invalid':
-        return False, input_text
-    return True, corrected_input
+# Function to process input text using NER and handle food items
+def process_input(text):
+    result = []  # The processed input is saved here
+    doc = nlp_ner(text.lower())
+    negation_words = ['not', 'no', 'but', 'dislike', 'hate']
+    liked_items = []
+    disliked_items = []
 
+    # Split the text into sentences to handle negation more accurately
+    for sent in doc.sents:
+        negation = False
+        for token in sent:
+            # Check if the current token is a negation word
+            if token.lower_ in negation_words:
+                negation = True
+            # Check if the token is an entity and its label is FOOD
+            if token.ent_type_ == 'FOOD':
+                if negation:
+                    disliked_items.append(token.text)
+                else:
+                    liked_items.append(token.text)
+        # Reset negation for the next sentence
+        negation = False
+
+    # Filter out disliked items from liked items
+    result = [item for item in liked_items if item not in disliked_items]
+
+    return result
+
+### Frontend interface ###
 # Title and Introduction
 st.title("Foodeasy - Personalized Meal Planning Assistant")
 st.markdown("""
@@ -72,22 +89,43 @@ health_goals = st.multiselect(
 if "Other (let us know!) 📝" in health_goals:
     other_goal = st.text_input("Please specify your other goal:")
 
-# Overview of usual meals
+# Overview of usual meals with NER integration
 st.markdown("**Can you give me a quick overview of what you usually eat for each meal?**")
 breakfast = st.text_area("Breakfast: 🍳", key="breakfast")
 lunch = st.text_area("Lunch: 🥪", key="lunch")
 dinner = st.text_area("Dinner: 🍝", key="dinner")
 snacks = st.text_area("Snacks: 🍏", key="snacks")
 
-# Additional dietary preferences
-st.markdown("**How would you describe your eating style? 🍽️**")
-eating_style = st.radio(
-    "Select your eating style:",
-    ["Omnivore", "Pescatarian", "Vegetarian", "Vegan", "No restrictions", "Other (please tell us more!)"]
-)
-if eating_style == "Other (please tell us more!)":
-    other_eating_style = st.text_input("Please specify your eating style:")
+# Handle the food input to only return the food items based on the custom SpaCy NER model
+def process_input(text):
+    result = []  # The processed input is saved here
+    doc = nlp_ner(text.lower())
+    negation_words = ['not', 'no', 'but', 'dislike', 'hate']
+    liked_items = []
+    disliked_items = []
 
+    # Split the text into sentences to handle negation more accurately
+    for sent in doc.sents:
+        negation = False
+        for token in sent:
+            # Check if the current token is a negation word
+            if token.lower_ in negation_words:
+                negation = True
+            # Check if the token is an entity and its label is FOOD
+            if token.ent_type_ == 'FOOD':
+                if negation:
+                    disliked_items.append(token.text)
+                else:
+                    liked_items.append(token.text)
+        # Reset negation for the next sentence
+        negation = False
+
+    # Filter out disliked items from liked items
+    result = [item for item in liked_items if item not in disliked_items]
+
+    return result
+
+# Additional dietary preferences
 st.markdown("**Do you have any other dietary needs? 🍽️ You can always update this later.**")
 dietary_needs = st.multiselect(
     "Select any dietary needs:",
@@ -161,7 +199,7 @@ lunch_time = st.number_input("Do you usually have lunch? 🥪 How much time do y
 dinner_time = st.number_input("Do you usually have dinner? 🍝 How much time do you spend making it? (minutes)", min_value=0, step=1)
 snack_time = st.number_input("Do you usually have snacks? 🍏 How much time do you spend preparing them? (minutes)", min_value=0, step=1)
 
-## Meal recommendation type selection
+# Custom recommendation type input
 st.markdown("**Finally, what type of meal recommendation are you looking for? 🍽️**")
 custom_recommendation_type = st.text_area("Type your custom recommendation type:", height=100)
 if custom_recommendation_type.strip() == "":
@@ -170,14 +208,14 @@ else:
     recommendation_type = custom_recommendation_type.strip()
 
 # Submit button and feedback
-if st.button("Submit and Get Recommendations"):
+if st.button("Get Recommendations"):
     user_profile = {
+        "meal_plan_for": meal_plan_for,
         "health_goals": health_goals,
-        "breakfast": breakfast,
-        "lunch": lunch,
-        "dinner": dinner,
-        "snacks": snacks,
-        "eating_style": eating_style,
+        "breakfast": breakfast_food,
+        "lunch": lunch_food,
+        "dinner": dinner_food,
+        "snacks": snacks_food,
         "dietary_needs": dietary_needs,
         "nutrition_preferences": nutrition_preferences,
         "meat_preferences": meat_preferences,
@@ -193,59 +231,14 @@ if st.button("Submit and Get Recommendations"):
         "snack_time": snack_time
     }
 
-    # Validate and correct user inputs before sending to GPT-3.5
-    valid_inputs = True
-    invalid_fields = []
-    corrected_profile = {}
-    for key, value in user_profile.items():
-        if isinstance(value, str):
-            is_valid, corrected_value = validate_and_correct_input(value, key.replace('_', ' '))
-            if not is_valid:
-                invalid_fields.append(key.replace('_', ' '))
-                valid_inputs = False
-            else:
-                corrected_profile[key] = corrected_value
-        elif isinstance(value, list):
-            corrected_list = []
-            for item in value:
-                is_valid, corrected_value = validate_and_correct_input(item, key.replace('_', ' '))
-                if not is_valid:
-                    invalid_fields.append(f"{key.replace('_', ' ')}: {item}")
-                    valid_inputs = False
-                else:
-                    corrected_list.append(corrected_value)
-            corrected_profile[key] = corrected_list
-        else:
-            corrected_profile[key] = value
+    recommendations = get_food_recommendations(user_profile, recommendation_type.lower())
 
-    if valid_inputs:
-        recommendations = get_food_recommendations(corrected_profile, recommendation_type.lower())
-        st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
-        st.write(recommendations)
-    else:
-        st.error("Please correct the invalid inputs: " + ", ".join(invalid_fields))
-# Submit button
-if st.button("Submit"):
-    # Collect all user inputs
-    user_profile = {
-        "Overview of Usual Meals": {
-            "Breakfast": validated_breakfast if "validated_breakfast" in locals() else breakfast,
-            "Lunch": validated_lunch if "validated_lunch" in locals() else lunch,
-            "Dinner": validated_dinner if "validated_dinner" in locals() else dinner,
-            "Snacks": validated_snacks if "validated_snacks" in locals() else snacks
-        },
-        "Other Restrictions": validated_other_restrictions if "validated_other_restrictions" in locals() else other_restrictions,
-        "Disliked Foods": validated_disliked_foods if "validated_disliked_foods" in locals() else disliked_foods,
-        "Budget Considerations": validated_budget_info if "validated_budget_info" in locals() else budget_info,
-        "Allergies and Medical Conditions": validated_allergies_conditions if "validated_allergies_conditions" in locals() else allergies_conditions
-    }
+    st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
+    st.write(recommendations)
+    for index, recommendation in enumerate(recommendations):
+        st.write(f"**Recommendation {index + 1}:** {recommendation}")
+        st.write("Feedback:")
+        st.button("👍")  
+        st.button("👎")
 
-    # Further processing or API calls can be added here
-
-    # Display success message
-    st.subheader("Your information has been submitted successfully!")
-
-# Reset button
-if st.button("Reset"):
-    st.experimental_rerun()
 

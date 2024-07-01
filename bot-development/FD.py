@@ -1,5 +1,26 @@
 import streamlit as st
 import json
+import openai
+
+# Set your OpenAI API key
+openai.api_key = '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'
+
+# Function to get food recommendations from GPT-3.5
+def get_food_recommendations(user_profile, recommendation_type):
+    prompt = f"Based on the following user profile, provide a {recommendation_type}.\n\nUser Profile: {json.dumps(user_profile, indent=2)}"
+    
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=500,
+        temperature=0.7,
+    )
+
+    recommendations = [choice['message']['content'].strip() for choice in response.choices]
+    return recommendations
 
 # Title and Introduction
 st.title("Foodeasy - Personalized Meal Planning Assistant")
@@ -123,22 +144,21 @@ snack_time = st.number_input("Do you usually have snacks? 🍏 How much time do 
 
 ## Meal recommendation type selection
 st.markdown("**Finally, what type of meal recommendation are you looking for? 🍽️**")
-# recommendation are you looking for? 🍽️**")
 custom_recommendation_type = st.text_area("Type your custom recommendation type:", height=100)
 if custom_recommendation_type.strip() == "":
     st.warning("Please enter a valid custom recommendation type.")
 else:
     recommendation_type = custom_recommendation_type.strip()
 
-# Submit button and feedback
+# Generate recommendations based on user profile
 if st.button("Get Recommendations"):
     user_profile = {
-        "meal_plan_for": meal_plan_for,
         "health_goals": health_goals,
         "breakfast": breakfast,
         "lunch": lunch,
         "dinner": dinner,
         "snacks": snacks,
+        "eating_style": eating_style,
         "dietary_needs": dietary_needs,
         "nutrition_preferences": nutrition_preferences,
         "meat_preferences": meat_preferences,
@@ -154,19 +174,12 @@ if st.button("Get Recommendations"):
         "snack_time": snack_time
     }
 
-    # Check if a custom recommendation type is specified
-    if custom_recommendation_type.strip() == "":
-        st.warning("Please enter a valid custom recommendation type.")
-    else:
-        recommendation_type = custom_recommendation_type.strip()
+    recommendations = get_food_recommendations(user_profile, recommendation_type.lower())
 
-        # Placeholder for generating recommendations (you can replace this with your recommendation logic)
-        # For now, just a placeholder response:
-        recommendations = [
-            "Sample recommendation 1",
-            "Sample recommendation 2",
-            "Sample recommendation 3"
-        ]
-
-        st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
-
+    st.subheader(f"Here are your {recommendation_type.lower()} recommendations:")
+    
+    for index, recommendation in enumerate(recommendations):
+        st.write(f"**Recommendation {index + 1}:** {recommendation}")
+        st.write("Feedback:")
+        st.button("👍", key=f"like_{index}")  
+        st.button("👎", key=f"dislike_{index}")  
