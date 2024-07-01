@@ -1,5 +1,5 @@
 {
-    "meal_plan_for_num_peope": 1,
+    "meal_plan_for_num_people": 1,
     "health_goals": ["Maintain weight", "Improve overall health", "Increase energy levels"],
     "meal_history_overview": {
       "breakfast": ["whole wheat toast with avocado", "scrambled eggs with spinach", "Greek yogurt with berries"],
@@ -13,7 +13,7 @@
     "nutrition_preferences": ["Balanced macronutrients", "Whole foods", "Moderate portion sizes"],
     "meat_order_preference": ["Poultry", "Fish", "Lean cuts of Beef"],
     "seafood_order_preference": ["Salmon", "Shrimp", "Tilapia"],
-    "plant_based_order_preference": ["Legumes", "Tofu", "Quinoa"],
+    "plant_based_protein_order_preference": ["Legumes", "Tofu", "Quinoa"],
     "foods_not_eaten": ["None"],
     "breakfast_preferences": ["Whole grains", "Lean protein sources"],
     "lunch_dinner_preferences": ["Salads", "Grilled or baked dishes", "Vegetarian options"],

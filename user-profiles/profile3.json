@@ -1,5 +1,5 @@
 {
-    "meal_plan_for_num_peope": 1,
+    "meal_plan_for_num_people": 1,
     "health_goals": ["Increase muscle mass", "Improve digestion", "Boost immunity"],
     "meal_history_overview": {
       "breakfast": ["smoothie", "oatmeal with fruits", "Greek yogurt with honey"],
@@ -13,7 +13,7 @@
     "nutrition_preferences": ["High protein (>25g)", "Low carb", "Gut friendly"],
     "meat_order_preference": ["Poultry", "Beef + Bison", "Pork", "Lamb"],
     "seafood_order_preference": ["Salmon", "Tuna", "Trout"],
-    "plant_based_order_preference": ["Tofu + Tempeh", "Legumes", "Nuts + Seeds"],
+    "plant_based_protein_order_preference": ["Tofu + Tempeh", "Legumes", "Nuts + Seeds"],
     "foods_not_eaten": ["Mushrooms", "Shellfish"],
     "breakfast_preferences": ["Smoothies", "Oatmeal"],
     "lunch_dinner_preferences": ["Salads", "Bowls", "Grilled dishes"],

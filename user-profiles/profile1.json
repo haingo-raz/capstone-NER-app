@@ -1,5 +1,5 @@
 { 
-    "meal_plan_for_num_peope": 1,
+    "meal_plan_for_num_people": 1,
     "health_goals": ["Lose weight", "Save time", "Grocery shop less"],
     "meal_history_overview": {
         "breakfast": ["bacon and eggs", "pancakes", "oats"],
@@ -13,7 +13,7 @@
     "nutrition_preferences": ["Immunity boosting", "Less sugar (<2g added sugar)"],
     "meat_order_preference": ["Beef + Bison", "Poultry", "Pork", "Lamb"],
     "seafood_order_preference": ["Doesn’t matter, I like them all!"],
-    "plant_based_order_preference": ["Meat", "Tofu + Tempeh", "Beans + Lentils"],
+    "plant_based_protein_order_preference": ["Meat", "Tofu + Tempeh", "Beans + Lentils"],
     "foods_not_eaten": ["Onions", "Salad"],
     "breakfast_preferences": ["F. Oatmeal + granola", "H. Eggs"],
     "lunch_dinner_preferences": ["Sandwiches", "Bowls", "Main + Sides"],
@@ -51,6 +51,9 @@
     "delivery_instructions": "Leave at the front door if no one answers.",
     "contact_info": {
         "name": "Jane",
+        "age": 25,
+        "weight": 130,
+        "gender": "F",
         "email": "jane@example.com",
         "phone": "123-456-7890",
         "delivery_address": "123 Main St, Toronto, ON"
