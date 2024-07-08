@@ -1,0 +1,93 @@
+{
+    "classes": ["FOOD"],
+    "annotations": [
+      [
+        "I use peanut butter on my bread\r",
+        {
+          "entities": [
+            [6, 19, "FOOD"],
+            [26, 31, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I have fried rice cooked with soy sauce\r",
+        {
+          "entities": [
+            [7, 17, "FOOD"],
+            [30, 39, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I like having meatballs made from ground beef\r",
+        {
+          "entities": [
+            [14, 23, "FOOD"],
+            [34, 45, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I like grilled chicken accompanied with cilantro, bell pepper, and potato\r",
+        {
+          "entities": [
+            [7, 22, "FOOD"],
+            [40, 48, "FOOD"],
+            [50, 61, "FOOD"],
+            [67, 73, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Salads and bowls are a good combination for me\r",
+        {
+          "entities": [
+            [0, 6, "FOOD"],
+            [11, 16, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I add garlic paste to most of my meals to improve the taste\r",
+        {
+          "entities": [
+            [6, 18, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Yogurt is my go to breakfast\r",
+        {
+          "entities": [
+            [0, 6, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I usually have mushrooms with pasta\r",
+        {
+          "entities": [
+            [15, 24, "FOOD"],
+            [30, 35, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Starting my day with coffee makes it 10 times better\r",
+        {
+          "entities": [
+            [21, 27, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Cereals is my lazy dinner\r",
+        {
+          "entities": [
+            [0, 7, "FOOD"]
+          ]
+        }
+      ]
+    ]
+  }

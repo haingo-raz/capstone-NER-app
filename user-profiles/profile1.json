@@ -1,0 +1,61 @@
+{ 
+    "meal_plan_for_num_people": 1,
+    "health_goals": ["Lose weight", "Save time", "Grocery shop less"],
+    "meal_history_overview": {
+        "breakfast": ["bacon and eggs", "pancakes", "oats"],
+        "lunch": ["rice and soup"],
+        "dinner": ["soup"],
+        "snacks": ["chocolate bar", "Dried fruits"]
+    },
+    "eating_style": "No restrictions",
+    "dietary_needs": ["Shellfish-Free"],
+    "other_food_restrictions": [""],
+    "nutrition_preferences": ["Immunity boosting", "Less sugar (<2g added sugar)"],
+    "meat_order_preference": ["Beef + Bison", "Poultry", "Pork", "Lamb"],
+    "seafood_order_preference": ["Doesn’t matter, I like them all!"],
+    "plant_based_protein_order_preference": ["Meat", "Tofu + Tempeh", "Beans + Lentils"],
+    "foods_not_eaten": ["Onions", "Salad"],
+    "breakfast_preferences": ["F. Oatmeal + granola", "H. Eggs"],
+    "lunch_dinner_preferences": ["Sandwiches", "Bowls", "Main + Sides"],
+    "snack_preferences": ["Juices", "Fresh fruit + veggies"],
+    "meal_information": [
+        {
+            "breakfast": true,
+            "breakfast_preparation_time": "15 minutes"
+        },
+        {
+            "breakfast_to_lunch_snack": false
+        },
+        {
+            "lunch": true,
+            "lunch_preparation_time": "20 minutes"
+        },
+        {
+            "lunch_to_dinner_snack": true,
+            "lunch_to_dinner_snack_preparation_time": "5 minutes"
+        },
+        {
+            "dinner": true,
+            "dinner_preparation_time": "20 minutes"
+        }
+    ],
+    "cooking_frequency": "4 to 5 times per week",
+    "leftovers_and_recipe_repetition": {
+        "repeating_recipes": "I’m comfortable with repeating the same recipe 3-4 times during the week.",
+        "leftovers": "I'm fine with cooking ahead and eating leftovers for up to 2 days."
+    },
+    "kitchen_appliances": ["Microwave", "Oven", "Stove", "Blender"],
+    "grocery_shopping_method": "Online",
+    "grocery_stores": ["Whole Foods", "Trader Joe's"],
+    "non_preferred_stores_or_brands": ["Walmart"],
+    "delivery_instructions": "Leave at the front door if no one answers.",
+    "contact_info": {
+        "name": "Jane",
+        "age": 25,
+        "weight": 130,
+        "gender": "F",
+        "email": "jane@example.com",
+        "phone": "123-456-7890",
+        "delivery_address": "123 Main St, Toronto, ON"
+    }
+}

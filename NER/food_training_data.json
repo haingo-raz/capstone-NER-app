@@ -1,0 +1,391 @@
+{
+    "classes": ["FOOD"],
+    "annotations": [
+      [
+        "She likes seafood and meat but not eggs\r",
+        {
+          "entities": [
+            [10, 17, "FOOD"],
+            [22, 26, "FOOD"],
+            [35, 39, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "He is allergic to peanut and does not like soy\r",
+        {
+          "entities": [
+            [18, 24, "FOOD"],
+            [43, 46, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "He is a fan of beef, meatballs, ground beef, and bison\r",
+        {
+          "entities": [
+            [15, 19, "FOOD"],
+            [21, 30, "FOOD"],
+            [32, 43, "FOOD"],
+            [49, 54, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "What is a poultry?\r",
+        {
+          "entities": [
+            [10, 17, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "There is a grilled chicken here\r",
+        {
+          "entities": [
+            [11, 26, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "They eat chicken\r",
+        {
+          "entities": [
+            [9, 16, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "They prefer ground turkey and pork\r",
+        {
+          "entities": [
+            [12, 25, "FOOD"],
+            [30, 34, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "They dislike carnitas, ham, and lamb\r",
+        {
+          "entities": [
+            [13, 21, "FOOD"],
+            [23, 26, "FOOD"],
+            [32, 36, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "A dish with some fish, salmon, lox and shrimp\r",
+        {
+          "entities": [
+            [17, 21, "FOOD"],
+            [23, 29, "FOOD"],
+            [31, 34, "FOOD"],
+            [39, 45, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I love eating crabs, lobster, clams, oyster and mussel\r",
+        {
+          "entities": [
+            [14, 19, "FOOD"],
+            [21, 28, "FOOD"],
+            [30, 35, "FOOD"],
+            [37, 43, "FOOD"],
+            [48, 54, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I usually get squids, octopus, tofu, and tempeh\r",
+        {
+          "entities": [
+            [14, 20, "FOOD"],
+            [22, 29, "FOOD"],
+            [31, 35, "FOOD"],
+            [41, 47, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Sometimes I have beans, lentils, and black beans\r",
+        {
+          "entities": [
+            [17, 22, "FOOD"],
+            [24, 31, "FOOD"],
+            [37, 48, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I buy lentil dal from the supermarket\r",
+        {
+          "entities": [
+            [6, 16, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I love eating chorizo\r",
+        {
+          "entities": [
+            [14, 21, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "She dislikes any meal with tomatoes and eggplants\r",
+        {
+          "entities": [
+            [27, 35, "FOOD"],
+            [40, 49, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Put the mushrooms in the fridge please\r",
+        {
+          "entities": [
+            [8, 17, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "We do not have cilantro, bell pepper, and potato left in the fridge\r",
+        {
+          "entities": [
+            [15, 23, "FOOD"],
+            [25, 36, "FOOD"],
+            [42, 48, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Add some garlic to taste\r",
+        {
+          "entities": [
+            [9, 15, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "The onions taste awful\r",
+        {
+          "entities": [
+            [4, 10, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "She prefers eating sandwiches and wraps with smoothies\r",
+        {
+          "entities": [
+            [19, 29, "FOOD"],
+            [34, 39, "FOOD"],
+            [45, 54, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I don't like baked goods\r",
+        {
+          "entities": [
+            [13, 24, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I eat cereals when I am on a rush\r",
+        {
+          "entities": [
+            [6, 13, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I don't drink coffee, it's not good\r",
+        {
+          "entities": [
+            [14, 20, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Tea is a better alternative\r",
+        {
+          "entities": [
+            [0, 3, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Oatmeal as breakfast has facilitated my morning routine\r",
+        {
+          "entities": [
+            [0, 7, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "She has granola in bed\r",
+        {
+          "entities": [
+            [8, 15, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "My kids like homemade yogurt\r",
+        {
+          "entities": [
+            [22, 28, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I usually have bowls\r",
+        {
+          "entities": [
+            [15, 20, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I like eating pasta, and pizza from the Italian restaurant across my \r",
+        {
+          "entities": [
+            [14, 19, "FOOD"],
+            [25, 30, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I do not like salads\r",
+        {
+          "entities": [
+            [14, 20, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I rarely buy burgers, but I still eat them\r",
+        {
+          "entities": [
+            [13, 20, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Grab tacos and chips from the Mexican restaurant\r",
+        {
+          "entities": [
+            [5, 10, "FOOD"],
+            [15, 20, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "What are puffs?\r",
+        {
+          "entities": [
+            [9, 14, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I have popcorn for breakfast, I know it is weird\r",
+        {
+          "entities": [
+            [7, 14, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I blend fruits in the blender to make juices\r",
+        {
+          "entities": [
+            [8, 14, "FOOD"],
+            [38, 44, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I always have crackers, pretzels, and dried fruits handy\r",
+        {
+          "entities": [
+            [14, 22, "FOOD"],
+            [24, 32, "FOOD"],
+            [38, 50, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I prepare smoothies for lunch\r",
+        {
+          "entities": [
+            [10, 19, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I eat a lot of veggies to stay healthy\r",
+        {
+          "entities": [
+            [15, 22, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I buy cheese weekly and add it to my meals\r",
+        {
+          "entities": [
+            [6, 12, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "Food bars as a snack keep me awake when I am working\r",
+        {
+          "entities": [
+            [5, 9, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I love jerky and pickles\r",
+        {
+          "entities": [
+            [7, 12, "FOOD"],
+            [17, 24, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I usually eat olives with vinegar\r",
+        {
+          "entities": [
+            [14, 20, "FOOD"],
+            [26, 33, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I am allergic ton nuts\r",
+        {
+          "entities": [
+            [18, 22, "FOOD"]
+          ]
+        }
+      ],
+      [
+        "I always include seeds and trail mix to my meals",
+        {
+          "entities": [
+            [17, 22, "FOOD"],
+            [27, 36, "FOOD"]
+          ]
+        }
+      ]
+    ]
+  }
