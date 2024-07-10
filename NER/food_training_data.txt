@@ -1,44 +1,444 @@
-She likes seafood and meat but not eggs
-He is allergic to peanut and does not like soy
-He is a fan of beef, meatballs, ground beef, and bison
-What is a poultry?
-There is a grilled chicken here
-They eat chicken
-They prefer ground turkey and pork
-They dislike carnitas, ham, and lamb
-A dish with some fish, salmon, lox and shrimp
-I love eating crabs, lobster, clams, oyster and mussel
-I usually get squids, octopus, tofu, and tempeh
-Sometimes I have beans, lentils, and black beans
-I buy lentil dal from the supermarket
-I love eating chorizo
-She dislikes any meal with tomatoes and eggplants
-Put the mushrooms in the fridge please
-We do not have cilantro, bell pepper, and potato left in the fridge
-Add some garlic to taste
-The onions taste awful
-She prefers eating sandwiches and wraps with smoothies
-I don't like baked goods
-I eat cereals when I am on a rush
-I don't drink coffee, it's not good
-Tea is a better alternative
-Oatmeal as breakfast has facilitated my morning routine
-She has granola in bed
-My kids like homemade yogurt
-I usually have bowls
-I like eating pasta, and pizza from the Italian restaurant across my 
-I do not like salads
-I rarely buy burgers, but I still eat them
-Grab tacos and chips from the Mexican restaurant
-What are puffs?
-I have popcorn for breakfast, I know it is weird
-I blend fruits in the blender to make juices
-I always have crackers, pretzels, and dried fruits handy
-I prepare smoothies for lunch
-I eat a lot of veggies to stay healthy
-I buy cheese weekly and add it to my meals
-Food bars as a snack keep me awake when I am working
-I love jerky and pickles
-I usually eat olives with vinegar
-I am allergic ton nuts
-I always include seeds and trail mix to my meals
+she likes seafood and meat but not eggs
+he is allergic to peanuts and does not like soy
+he is a fan of beef, meatballs, ground beef, and bison
+what is poultry?
+there is grilled chicken here
+they eat chicken
+they prefer ground turkey and pork
+they dislike carnitas, ham, and lamb
+a dish with some fish, salmon, lox, and shrimp
+i love eating crabs, lobster, clams, oysters, and mussels
+i usually get squids, octopus, tofu, and tempeh
+sometimes i have beans, lentils, and black beans
+i buy lentil dal from the supermarket
+i love eating chorizo
+she dislikes any meal with tomatoes and eggplants
+put the mushrooms in the fridge, please
+we do not have cilantro, bell pepper, and potato left in the fridge
+add some garlic to taste
+the onions taste awful
+she prefers eating sandwiches and wraps with smoothies
+i don't like baked goods
+i eat cereals when i am in a rush
+i don't drink coffee, it's not good
+tea is a better alternative
+oatmeal as breakfast has facilitated my morning routine
+she has granola in bed
+my kids like homemade yogurt
+i usually have bowls
+i like eating pasta and pizza from the italian restaurant across my place
+i do not like salads
+i rarely buy burgers, but i still eat them
+grab tacos and chips from the mexican restaurant
+what are puffs?
+i have popcorn for breakfast, i know it is weird
+i blend fruits in the blender to make juices
+i always have crackers, pretzels, and dried fruits handy
+i prepare smoothies for lunch
+i eat a lot of veggies to stay healthy
+i buy cheese weekly and add it to my meals
+food bars as a snack keep me awake when i am working
+i love jerky and pickles
+i usually eat olives with vinegar
+i am allergic to nuts
+i always include seeds and trail mix in my meals
+one of the most popular dishes is baked goods.
+bread is a great option for a healthy snack.
+everything tastes better with a little bit of cereals.
+everything tastes better with a little bit of nuts.
+seeds are a popular choice for many people.
+most of the time, i eat meat for breakfast.
+have you ever cooked with eggs?
+have you ever cooked with rice?
+have you ever tried seafood?
+most of the time, i eat desserts for breakfast.
+eating dips is a great way to stay healthy.
+for a healthy option, consider adding dumplings to your diet.
+fast food is a great option for a healthy snack.
+one of the most popular dishes is noodles.
+have you ever cooked with pies?
+have you ever tried salads?
+most of the time, i eat sandwiches for breakfast.
+everything tastes better with a little bit of sauces.
+where can you find soups in your local area?
+have you ever tasted stews?
+where can you find asparagus in your local area?
+lomo saltado is a delicious choice for any meal.
+biscuits can be used in a variety of recipes.
+there are many ways to cook cookies.
+eating crackers is a great way to stay healthy.
+consider adding ginger snap to your next meal.
+many people enjoy eating hardtack for breakfast.
+abernethy is a delicious choice for any meal.
+there are many ways to cook acıbadem kurabiyesi.
+i usually eat afghan biscuits for lunch.
+most of the time, i eat alfajor for breakfast.
+many people enjoy eating almond biscuit for breakfast.
+many people enjoy the taste of lebkuchen.
+the best way to cook aachener printen is to grill it.
+cornish fairing can be used in a variety of dishes.
+speculaas can be used in a variety of dishes.
+springerle is a delicious choice for any meal.
+kruidnoten is a delicious choice for any meal.
+everything tastes better with a little bit of bagel.
+everything tastes better with a little bit of bialy.
+croissant can be used in a variety of dishes.
+many people enjoy eating baguette for breakfast.
+many people enjoy eating toast for dinner.
+consider adding burrito to your next meal.
+everything tastes better with a little bit of cabbage.
+for a healthy option, consider adding cabbage roll to your diet.
+where can you find cake in your local area?
+for a healthy option, consider adding cheesecake to your diet.
+the best way to cook chocolate cake is to grill it.
+where can you find carrot cake in your local area?
+have you ever tasted strawberry cake?
+ice cream cake is a popular choice for many people.
+have you ever tasted vanilla cake?
+for a healthy option, consider adding red velvet cake to your diet.
+one of the most popular dishes is cupcake.
+many people enjoy eating fudge cake for breakfast.
+many people enjoy eating cheese for dinner.
+many people enjoy eating mozzarella for breakfast.
+where can you find brie in your local area?
+many people enjoy eating feta for dinner.
+where can you find blue cheese in your local area?
+there are many ways to cook parmesan.
+many people enjoy the taste of cheese stick.
+for a healthy option, consider adding cheesestrings to your diet.
+many people enjoy the taste of congee.
+donuts can be used in a variety of dishes.
+jam is a popular choice for many people.
+many people enjoy eating sprinkles for breakfast.
+eating donut holes is a great way to stay healthy.
+the best way to cook chocolate is to grill it.
+krispy kreme is a popular choice for many people.
+consider adding arepa to your next meal.
+i usually eat fun guo for lunch.
+har gow can be used in a variety of dishes.
+have you ever tried momo (food)?
+there are many ways to cook pierogi.
+have you ever tasted wonton?
+one of the most popular dishes is fruits.
+the best way to cook apple is to grill it.
+banana can be used in a variety of dishes.
+eating cantaloupe is a great way to stay healthy.
+many people enjoy the taste of durian.
+there are many ways to cook orange (fruit).
+cherry can be used in a variety of dishes.
+have you ever tried kiwi?
+the best way to cook watermelon is to grill it.
+for a healthy option, consider adding avocado to your diet.
+apricot is a delicious choice for any meal.
+many people enjoy eating pear for breakfast.
+many people enjoy eating pineapple for breakfast.
+consider adding strawberry to your next meal.
+many people enjoy eating blueberry for dinner.
+there are many ways to cook raspberry.
+one of the most popular dishes is french fries.
+there are many ways to cook poutine.
+grains is a delicious choice for any meal.
+i usually eat cereal for lunch.
+the best way to cook corn is to grill it.
+popcorn is a popular choice for many people.
+rice can be used in a variety of recipes.
+ice cream is a great option for a healthy snack.
+everything tastes better with a little bit of chocolate.
+the best way to cook vanilla is to grill it.
+cookies and cream can be used in a variety of dishes.
+many people enjoy the taste of mint chocolate.
+rocky road is a popular choice for many people.
+consider adding biscuit tortoni to your next meal.
+the best way to cook blue moon is to grill it.
+eating queso is a great way to stay healthy.
+eating hokey pokey is a great way to stay healthy.
+have you ever tried moose tracks?
+many people enjoy eating tiger tail for dinner.
+there are many ways to cook superman.
+everything tastes better with a little bit of spumoni.
+have you ever tried pistachio?
+moon mist can be used in a variety of dishes.
+have you ever tasted neapolitan?
+where can you find mashed potatoes in your local area?
+beef is a delicious choice for any meal.
+wagyu is a delicious choice for any meal.
+consider adding steak to your next meal.
+i usually eat pork for lunch.
+consider adding bacon to your next meal.
+there are many ways to cook ham.
+poultry is a great option for a healthy snack.
+buffalo wing is a great option for a healthy snack.
+i usually eat chicken balls for lunch.
+chicken nuggets can be used in a variety of dishes.
+there are many ways to cook chicken steak.
+eating chicken feet is a great way to stay healthy.
+ribs can be used in a variety of dishes.
+have you ever cooked with fish?
+have you ever cooked with salmon?
+many people enjoy the taste of shrimp and prawn.
+many people enjoy eating shark for breakfast.
+many people enjoy the taste of scrambled eggs.
+for a healthy option, consider adding sunny side up to your diet.
+omelette is a popular choice for many people.
+many people enjoy the taste of boiled eggs.
+tea egg can be used in a variety of dishes.
+everything tastes better with a little bit of century egg.
+iron egg can be used in a variety of dishes.
+have you ever tasted smoked eggs?
+soy egg is a popular choice for many people.
+have you ever tasted chinese red eggs?
+milk is a delicious choice for any meal.
+there are many ways to cook almond milk.
+soy milk can be used in a variety of recipes.
+most of the time, i drink cow milk for breakfast.
+eating goat milk is a great way to stay healthy.
+there are many ways to cook onion rings.
+pasta is a popular choice for many people.
+there are many ways to cook lasagna.
+have you ever tasted linguini?
+ravioli is a popular choice for many people.
+the best way to cook carbonara is to grill it.
+where can you find bolognese in your local area?
+where can you find spaghetti in your local area?
+spaghetti and meatballs is a delicious choice for any meal.
+have you ever tasted pancit canton?
+i usually eat fettuccine for lunch.
+everything tastes better with a little bit of pudding.
+many people enjoy eating pupusa for breakfast.
+eating pie is a great way to stay healthy.
+many people enjoy eating shepherds pie for dinner.
+apple pie is a popular choice for many people.
+many people enjoy eating cream pie for breakfast.
+many people enjoy eating pumpkin pie for breakfast.
+eating key lime pie is a great way to stay healthy.
+peach pie is a great option for a healthy snack.
+the best way to cook pizza is to grill it.
+the best way to cook pepperoni is to grill it.
+hawaiian is a delicious choice for any meal.
+margherita is a delicious choice for any meal.
+one of the most popular dishes is rolls.
+have you ever cooked with croquette?
+i usually eat egg roll for lunch.
+many people enjoy eating spring roll for breakfast.
+many people enjoy eating lumpia for breakfast.
+have you ever tasted grilled cheese?
+there are many ways to cook panini.
+consider adding cheeseburgers to your next meal.
+many people enjoy eating bacon cheeseburger for dinner.
+hamburgers is a delicious choice for any meal.
+have you ever tasted chicken burger?
+have you ever tried hot dogs?
+there are many ways to cook chowder.
+clam chowder is a great option for a healthy snack.
+i usually eat corn chowder for lunch.
+consider adding sinigang to your next meal.
+many people enjoy eating sushi for breakfast.
+many people enjoy eating stew for breakfast.
+the best way to cook taco is to grill it.
+have you ever cooked with tamale?
+have you ever tasted turnover?
+many people enjoy eating jamaican patty for breakfast.
+have you ever tried waffle?
+many people enjoy eating roti canai for breakfast.
+where can you find yogurt in your local area?
+have you ever cooked with edible plants?
+eating fruit is a great way to stay healthy.
+have you ever tasted edible fungi?
+where can you find edible mushrooms in your local area?
+have you ever tasted mushroom dishes?
+edible nuts and seeds can be used in a variety of dishes.
+many people enjoy the taste of culinary nuts.
+edible seeds are a great option for a healthy snack.
+sesame seed dishes can be used in a variety of dishes.
+for a healthy option, consider adding edible legumes to your diet.
+legume dishes are a great option for a healthy snack.
+have you ever tasted tofu dishes?
+have you ever tasted meat dishes?
+many people enjoy the taste of beef dishes.
+chicken dishes can be used in a variety of recipes.
+many people enjoy eating domesticated meat animals for breakfast.
+one of the most popular dishes is hamburgers.
+where can you find hams in your local area?
+i usually eat kebabs for lunch.
+one of the most popular dishes is pork dishes.
+bacon dishes are a delicious choice for any meal.
+the best way to cook sausages is to grill them.
+many people enjoy the taste of hot dogs.
+many people enjoy eating sausage dishes for breakfast.
+consider adding rice dishes to your next meal.
+there are many ways to cook seafood dishes.
+many people enjoy eating cod dishes for breakfast.
+most of the time, i eat herring dishes for breakfast.
+everything tastes better with a little bit of raw fish dishes.
+seafood dishes are a popular choice for many people.
+have you ever tried edible seaweed?
+have you ever tasted fried dough foods?
+one of the most popular dishes is doughnut varieties.
+many people enjoy eating maize dishes for breakfast.
+one of the most popular dishes is staple foods.
+there are many ways to cook maize.
+most of the time, i eat barley grains for breakfast.
+appetizers are a delicious choice for any meal.
+condiments can be used in a variety of dishes.
+syrups are a popular choice for many people.
+many people enjoy eating confectionery for dinner.
+have you ever tried confectionery brands?
+chocolate bar can be used in a variety of dishes.
+one of the most popular dishes is candy.
+chocolate is a delicious choice for any meal.
+one of the most popular dishes is convenience foods.
+have you ever tried dessert-related lists?
+i usually eat paste for lunch.
+spread can be used in a variety of recipes.
+many people enjoy eating dried foods for breakfast.
+where can you find dumplings in your local area?
+have you ever tasted fast food?
+baked goods can be used in a variety of recipes.
+everything tastes better with a little bit of twice-baked.
+one of the most popular dishes is casseroles.
+have you ever tasted deep-fried?
+smoked is a great option for a healthy snack.
+steamed is a great option for a healthy snack.
+have you ever tried dried?
+everything tastes better with a little bit of fermented.
+many people enjoy the taste of soy products.
+the best way to cook food pastes is to grill them.
+many people enjoy the taste of garnishes.
+for a healthy option, consider adding gravies to your diet.
+have you ever tried instant?
+have you ever cooked with pickles?
+most of the time, i eat roll for breakfast.
+have you ever tried sauces?
+consider adding dessert sauces to your next meal.
+there are many ways to cook fish sauces.
+for a healthy option, consider adding hot sauces to your diet.
+i usually eat instant sauces for lunch.
+spreads are a delicious choice for any meal.
+stuffed dishes are a popular choice for many people.
+eating almond is a great way to stay healthy.
+the best way to cook buns is to grill them.
+have you ever tried flatbreads?
+most of the time, i eat quick breads for breakfast.
+many people enjoy eating sourdough breads for dinner.
+most of the time, i eat sweet breads for breakfast.
+have you ever tasted buckwheat?
+where can you find crackers in your local area?
+have you ever tried fried dough?
+have you ever tried legume?
+many people enjoy eating chickpea for breakfast.
+have you ever tried peanut?
+maize can be used in a variety of recipes.
+most of the time, i eat noodles for breakfast.
+have you ever tried fried noodle dishes?
+where can you find ramen in your local area?
+for a healthy option, consider adding pancakes to your diet.
+most of the time, i eat pasta dishes for breakfast.
+rice can be used in a variety of dishes.
+have you ever tried fried rice?
+have you ever cooked with rice cakes?
+the best way to cook rice pudding is to grill it.
+have you ever tried rice and beans?
+the best way to cook sesame seed is to grill it.
+toast can be used in a variety of dishes.
+the best way to cook butter dishes is to grill them.
+where can you find cheese dishes in your local area?
+have you ever tasted fondues?
+eating cheeses is a great way to stay healthy.
+i usually eat brined for lunch.
+where can you find yogurt in your local area?
+where can you find apple in your local area?
+everything tastes better with a little bit of avocado.
+one of the most popular dishes is banana.
+broccoli is a great option for a healthy snack.
+have you ever cooked with cabbage?
+carrot is a delicious choice for any meal.
+there are many ways to cook cassava.
+have you ever tasted cherry?
+everything tastes better with a little bit of eggplant.
+garlic is a delicious choice for any meal.
+one of the most popular dishes is grape.
+have you ever tried lemon?
+melon is a popular choice for many people.
+one of the most popular dishes is onion.
+the best way to cook plum is to grill it.
+many people enjoy the taste of potato.
+have you ever cooked with french fries?
+one of the most popular dishes is salads.
+many people enjoy eating arab for breakfast.
+for a healthy option, consider adding thai to your diet.
+i usually eat soy-based for lunch.
+have you ever cooked with squash and pumpkin?
+cereals are my lazy dinner.
+there are many ways to cook strawberries.
+i usually eat sweet potato for lunch.
+for a healthy option, consider adding tofu to your diet.
+tomato is a popular choice for many people.
+clam is a delicious choice for any meal.
+consider adding cod to your next meal.
+have you ever tried crab?
+one of the most popular dishes is fish head.
+i usually eat fish stews for lunch.
+many people enjoy eating fried fish for breakfast.
+have you ever cooked with herring?
+there are many ways to cook raw fish.
+have you ever tasted salmon?
+shrimp can be used in a variety of recipes.
+many people enjoy eating sushi and sashimi for dinner.
+many people enjoy the taste of tuna for breakfast.
+where can you find barbecue in your local area?
+beef is a great option for a healthy snack.
+have you ever tried shredded beef?
+many people enjoy the taste of steak.
+many people enjoy eating veal for breakfast.
+many people enjoy eating chicken for breakfast.
+everything tastes better with a little bit of duck.
+have you ever tasted egg?
+scrambled eggs are a great option for a healthy snack.
+goat is a popular choice for many people.
+i usually eat hamburgers for lunch.
+everything tastes better with a little bit of hot dogs.
+kebabs are a great option for a healthy snack.
+consider adding lamb to your next meal.
+the best way to cook meatball is to grill it.
+most of the time, i eat mixed grill for breakfast.
+many people enjoy the taste of pork.
+many people enjoy the taste of bacon.
+where can you find ham dishes in your local area?
+everything tastes better with a little bit of ham.
+most of the time, i eat sausages for breakfast.
+everything tastes better with a little bit of beans.
+blood is a popular choice for many people.
+everything tastes better with a little bit of cheese.
+many people enjoy the taste of cream.
+fish and seafood are a delicious choice for any meal.
+i usually eat vegetables for lunch.
+Eating cakes is a great way to stay healthy.
+One of the most popular dishes is candies.
+Chocolate bars can be used in a variety of recipes.
+Many people enjoy eating chocolate-covered for dinner.
+Have you ever cooked with cookies?
+Shortbread is a popular choice for many people.
+Most of the time, I eat desserts for breakfast.
+The best way to cook custard is to grill it.
+One of the most popular dishes is doughnuts.
+Consider adding pastries to your next meal.
+Pies, tarts, and flans are a delicious choice for any meal.
+Many people enjoy the taste of puddings.
+Everything tastes better with a little bit of baozi.
+The best way to cook breakfast is to grill it.
+Consider adding drinks to your next meal.
+The best way to cook brunch is to grill it.
+Consider adding chifa to your next meal.
+Have you ever tried Christmas?
+Many people enjoy the taste of chutneys.
+Have you ever tried coconut?
+Everything tastes better with a little bit of coconut milk.
+Coffee can be used in a variety of recipes.
+Consider adding hors d'oeuvre to your next meal.
+For a healthy option, consider adding tapas to your diet.
+Made from maple can be used in a variety of dishes.
+Mushroom can be used in a variety of recipes.
+Pastries can be used in a variety of recipes.
+Where can you find pies, tarts, and flans in your local area?
+Have you ever tried porridges?
+Relishes are a popular choice for many people.
