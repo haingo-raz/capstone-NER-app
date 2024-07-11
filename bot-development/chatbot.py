@@ -2,6 +2,7 @@ import streamlit as st
 import spacy
 from openai import OpenAI
 import re
+from textblob import TextBlob
 # from tinydb import TinyDB
 
 # Initialize chat history
@@ -77,23 +78,23 @@ def extract_entities(text):
     disliked_items = []
     # allergies = []
     names = []
-
-    for sent in doc.sents:
-        negation = False
-        for token in sent:
-            if token.lower_ in negation_words:
-                negation = True
-            if token.ent_type_ == 'FOOD':
-                if negation:
-                    disliked_items.append(token.text)
-                else:
-                    liked_items.append(token.text)
+    sentiments = 0
+    for ent in doc.ents:
+        if ent.label_ == 'FOOD':
+            sentence = next(sent for sent in doc.sents if ent.text in sent.text)
+            blob = TextBlob(sentence.text)
+            sentiments= blob.sentiment.polarity
+            print(sentiments)
+            if sentiments < 0:
+                disliked_items.append(ent.text)
+            else:
+                liked_items.append(ent.text)
             # elif token.ent_type_ == 'ALLERGY': # TBD
             #     allergies.append(token.text)
-            elif token.ent_type_ == 'PERSON': # TBD
-                names.append(token.text)
-        negation = False
-    
+        elif ent.label_ == 'PERSON': # TBD
+            names.append(ent.text)
+    negation = False
+
     # return liked_items, disliked_items, allergies, names
     return liked_items, disliked_items, names
 
@@ -108,7 +109,7 @@ def update_profile_with_entities(liked_items, disliked_items, names):
 
 # Function used to get the response from the OpenAI API
 def get_openai_response(prompt):
-    system = [{"role": "system", "content": "You ask an assistant that asks users a question to gather information about them."}]
+    system = [{"role": "system", "content": "You are an assistant that asks questions from the predefined list."}]
     chat_history = st.session_state.messages
     user = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
@@ -122,7 +123,7 @@ def get_openai_response(prompt):
 # Generate the next question
 def generate_next_question(profile):
     profile_prompt = f"User profile: {profile}\n\n"
-    questions_prompt = "Ask these questions 1 by 1 (once only):\n"
+    questions_prompt = "Ask any of these questions from this list only 1 by 1 (once only for each question):\n"
     for question in st.session_state.predefined_questions:
         questions_prompt += f"- {question}\n"
 
@@ -157,7 +158,7 @@ def update_profile_with_response(question, response):
         st.session_state.user_profile["name"] = response
     elif ("How old are you?" or "What is your age?") in question: # Have different question alternatives
         st.session_state.user_profile["age"] = response # not fully int
-    elif ("Do you usually have breakfast?" or "Do you eat breakfast?" or "Do you have breakfast?" or "Do you have breakfast in the morning?" or "Do you have breakfast every day?" or "Do you have breakfast every morning?" or "Do you have breakfast usually?" or "Do you have breakfast often?" or "Do you have breakfast sometimes?") in question:
+    elif ("Do you usually have breakfast?" or "time to prepare breakfast" or "Do you eat breakfast?" or "Do you have breakfast?" or "Do you have breakfast in the morning?" or "Do you have breakfast every day?" or "Do you have breakfast every morning?" or "Do you have breakfast usually?" or "Do you have breakfast often?" or "Do you have breakfast sometimes?") in question:
         affirmative_responses = ["yes", "y", "yeah", "yup", "sure", "of course", "always", "every day", "every morning", "usually", "often", "sometimes", "occasionally", "rarely"]
         st.session_state.user_profile["breakfast"] = response.lower() in affirmative_responses
         if not user_profile["breakfast"]:
