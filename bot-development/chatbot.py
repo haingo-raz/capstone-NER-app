@@ -37,11 +37,37 @@ user_profile = {
 predefined_questions = [
     'What are your top health goals with Foodeasy?\n1. Lose weight\n2. Save money\n3. Simplify cooking\n4. Save time ⏰\n5. Try new things 🌟\n6. Improve health 💪\n7. Grocery shop less 🛒\n8. Waste less food 🌱\n9. Other (let us know!) 📝', 
     'Do you usually have breakfast?', 
-    'How much time do you spend making it?', # This question is only asked if the user usually have breakfast
+    'How much time do you spend making it (breakfast)?', # This question is only asked if the user usually have breakfast
     'What is your name?',
     'How old are you?',
     # 'Do you have any other dietary needs? 1. Dairy-Free\n2. Gluten-Free\n3. Soy-Free \n 4. Tree Nut-Free \n5. Peanut-Free \n 6. Egg-Free\n 7. Shellfish-Free 🍽️ \n 8. Other', # Comment 5: To be able to record the last responses
 ]
+
+# Initialize the questions list
+st.session_state.setdefault('questions', [])
+
+# Initialize the messages list if it doesn't exist
+if "messages" not in st.session_state:
+    st.session_state.messages=[]
+
+if "user_profile" not in st.session_state:
+    st.session_state.user_profile = user_profile
+
+# Questions that have been asked
+if "questions" not in st.session_state:
+    st.session_state.questions = predefined_questions
+
+# The predefined questions
+if "predefined_questions" not in st.session_state:
+    st.session_state.predefined_questions = predefined_questions
+
+if "current_question" not in st.session_state:
+    st.session_state.current_question = predefined_questions[0]
+
+# Responses are saved here
+if 'responses' not in st.session_state:
+    st.session_state.questions.extend(predefined_questions) # ??
+    st.session_state.responses = []
 
 # Function to extract entities using spaCy
 def extract_entities(text):
@@ -82,7 +108,7 @@ def update_profile_with_entities(liked_items, disliked_items, names):
 
 # Function used to get the response from the OpenAI API
 def get_openai_response(prompt):
-    system = [{"role": "system", "content": "You are a meal planning assistant."}]
+    system = [{"role": "system", "content": "You ask an assistant that asks users a question to gather information about them."}]
     chat_history = st.session_state.messages
     user = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
@@ -96,8 +122,8 @@ def get_openai_response(prompt):
 # Generate the next question
 def generate_next_question(profile):
     profile_prompt = f"User profile: {profile}\n\n"
-    questions_prompt = "Ask any from this list in order, 1 by 1, only if the key does not have a value yet:\n"
-    for question in predefined_questions:
+    questions_prompt = "Ask these questions 1 by 1 (once only):\n"
+    for question in st.session_state.predefined_questions:
         questions_prompt += f"- {question}\n"
 
     prompt = profile_prompt + questions_prompt
@@ -127,21 +153,21 @@ def parse_health_goals(response):
 
 # Update the user profile with the response
 def update_profile_with_response(question, response):
-    if question == "What is your name?":
+    if ("What is your name?" or "How can I call you?" or "What should I call you?" or "What's your name?" or "What do you want me to call you?") in question:
         st.session_state.user_profile["name"] = response
-    elif question == "How old are you?":
+    elif ("How old are you?" or "What is your age?") in question: # Have different question alternatives
         st.session_state.user_profile["age"] = response # not fully int
-    elif question == "Do you usually have breakfast?":
+    elif ("Do you usually have breakfast?" or "Do you eat breakfast?" or "Do you have breakfast?" or "Do you have breakfast in the morning?" or "Do you have breakfast every day?" or "Do you have breakfast every morning?" or "Do you have breakfast usually?" or "Do you have breakfast often?" or "Do you have breakfast sometimes?") in question:
         affirmative_responses = ["yes", "y", "yeah", "yup", "sure", "of course", "always", "every day", "every morning", "usually", "often", "sometimes", "occasionally", "rarely"]
         st.session_state.user_profile["breakfast"] = response.lower() in affirmative_responses
         if not user_profile["breakfast"]:
             st.session_state.user_profile["breakfast_time"] = None
-            if "How much time do you spend making it?" in predefined_questions:
-                st.session_state.predefined_questions.remove("How much time do you spend making it?")
-    elif question == "How much time do you spend making breakfast?":
+            if ("How much time do you spend making it (breakfast)?" or "How much time do you spend making it" or "How much time do you spend preparing it" or "How much time do you spend preparing breakfast?") in st.session_state.predefined_questions:
+                st.session_state.predefined_questions.remove("How much time do you spend making it (breakfast)?")
+    elif "How much time do you spend making breakfast?" in question:
         st.session_state.user_profile["breakfast_time"] = response # not fully int
     elif "What are your top health goals with Foodeasy?" in question:
-        st.session_state.user_profile["health_goals"] = parse_health_goals(response)
+        st.session_state.user_profile["health_goals"].extend(parse_health_goals(response))
 
 # Streamlit setup
 # Use the full page instead of a narrow central column
@@ -163,6 +189,7 @@ def on_input_change():
     # Update profile with user response to the current question
     current_question = st.session_state.current_question
 
+    # GET THE CURRENT QUESTION
     update_profile_with_response(current_question, user_input)
 
     st.session_state.messages.append({"role": "user", "content": user_input})
@@ -172,28 +199,9 @@ def on_input_change():
     # Generate the next question based on the current user profile
     next_question = generate_next_question(st.session_state.user_profile)
     st.session_state.messages.append({"role": "assistant", "content": next_question})
+    # The current question should be the last question asked by the assistant
+    st.session_state.current_question = next_question
 
-# Initialize the questions list
-st.session_state.setdefault('questions', [])
-
-# Initialize the messages list if it doesn't exist
-if "messages" not in st.session_state:
-    st.session_state.messages=[]
-
-if "user_profile" not in st.session_state:
-    st.session_state.user_profile = user_profile
-
-# # Initialize session state
-if "questions" not in st.session_state:
-    st.session_state.questions = predefined_questions
-
-if "current_question" not in st.session_state:
-    st.session_state.current_question = predefined_questions[0]
-
-# Responses are saved here
-if 'responses' not in st.session_state:
-    st.session_state.questions.extend(predefined_questions) # ??
-    st.session_state.responses = []
 
 with col1:
     st.title("FoodEasy Assistant")
@@ -223,6 +231,9 @@ with col2:
     with st.container():
         st.markdown("Gathered user information:")
         st.write(st.session_state.user_profile)
+        with st.container(height=150):
+            st.markdown("Current question:")
+            st.markdown(st.session_state.current_question)
         with st.container(height=250):
             st.markdown("Your responses:")
             st.write(st.session_state.responses)
