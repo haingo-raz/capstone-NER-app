@@ -11,7 +11,7 @@ import re
 # chat_history = db.all()
 
 # Set your OpenAI API key
-client = OpenAI(api_key="")
+client = OpenAI(api_key="sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR")
 
 # Load our custom model
 nlp_ner = spacy.load("../NER/model-best")
