@@ -1,0 +1,11 @@
+Milk Allergy
+Eggs Allergy
+Fish Allergy
+Shellfish Allergy
+Tree nuts Allergy
+Peanuts Allergy
+Wheat Allergy
+Soy Allergy
+Sesame Allergy
+Pregnant
+Diabetic

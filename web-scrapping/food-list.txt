@@ -1,0 +1,435 @@
+baked goods
+water
+breads
+cereals
+nuts
+seeds
+meat
+eggs
+rice
+seafood
+desserts
+dips
+dumplings
+fast food
+noodles
+pies
+salads
+sandwiches
+sauces
+soups
+stews
+asparagus
+lomo saltado
+biscuits
+oreo
+cookie
+cracker
+ginger snap
+hardtack
+abernethy
+acıbadem kurabiyesi
+afghan biscuits
+alfajor
+almond biscuit
+lebkuchen
+aachener printen
+cornish fairing
+speculaas
+springerle
+kruidnoten
+bagel
+bialy
+butter croissant
+cake pop
+oat bar
+madeleine
+croissant
+muffins
+eclairs
+cakes
+pies
+pretzels
+cinnamon cake
+cinnamon rolls
+banana loaf
+iced lemon loaf
+chocolate cookie
+baguette
+toast
+burrito
+cabbage
+cabbage roll
+cake
+cheesecake
+chocolate cake
+carrot cake
+strawberry cake
+ice-cream cake
+vanilla cake
+red velvet cake
+cupcake
+fudge cake
+cheese
+mozzarella
+brie
+feta
+blue cheese
+parmesan
+cheese stick
+cheesestrings
+congee
+donuts
+doughnut
+
+jam
+sprinkles
+donut holes
+chocolate
+krispy kreme
+arepa
+fun guo
+har gow
+momo
+pierogi
+wonton
+fruits
+apple
+banana
+papaya
+cantaloupe
+durian
+orange
+blackberry
+raspberry
+cherry
+kiwi
+watermelon
+avocado
+apricot
+pear
+pineapple
+strawberry
+blueberry
+french fries
+chips
+apple chips
+gum
+chewing gum
+spearmint gum
+poutine
+grains
+cereal
+corn
+popcorn
+rice
+ice cream
+iced coffee
+chocolate
+vanilla
+cookie
+mint chocolate
+rocky road
+biscuit tortoni
+blue moon
+queso
+hokey pokey
+moose tracks
+tiger tail
+mango
+grapefruit
+lime
+lemon pie
+superman
+spumoni
+pistachio
+moon mist
+neapolitan
+mashed potatoes
+beef
+wagyu
+steak
+pork
+ham
+poultry
+buffalo wing
+chicken balls
+chicken nuggets
+chicken steak
+chicken soup
+chicken feet
+ribs
+fish
+salmon
+lobster
+shrimp
+prawn
+shark
+scrambled egg
+sunny side up
+omelette
+boiled egg
+tea egg
+century egg
+iron egg
+smoked egg
+soy egg
+chinese red eggs
+milk
+almond milk
+soy milk
+cow milk
+goat milk
+onion rings
+pasta
+lasagna
+linguini
+ravioli
+carbonara
+bolognese
+spaghetti
+spaghetti bolognese
+meatballs
+pancit canton
+fettuccine
+pudding
+pupusa
+pie
+shepherds pie
+apple pie
+cream pie
+pumpkin pie
+lime pie
+peach pie
+pizza
+pepperoni
+hawaiian
+margherita
+rolls
+croquette
+egg roll
+spring roll
+lumpia
+grilled cheese
+panini
+cheeseburgers
+bacon cheeseburger
+hamburgers
+chicken burger
+hot dogs
+chowder
+clam chowder
+corn chowder
+sinigang
+sushi
+stew
+taco
+tamale
+turnover
+jamaican patty
+waffle
+roti canai
+yogurt
+edible plants
+fruit
+edible fungi
+edible mushroom
+mushroom dishes
+edible nuts
+seeds
+culinary nuts
+edible seeds
+sesame seed dishes
+edible legumes
+legume dishes
+tofu dishes
+meat dishes
+beef dishes
+chicken dishes
+domesticated meat animals
+hamburgers
+hams
+kebabs
+pork dishes
+bacon dishes
+sausages
+hot dogs
+sausage dishes
+rice dishes
+seafood dishes
+cod dishes
+herring dishes
+raw fish dishes
+seafood dishes
+edible seaweed
+fried dough foods
+doughnut varieties
+maize dishes
+staple foods
+maize
+barley grains
+appetizers
+condiments
+syrups
+confectionery
+confectionery brands
+chocolate bar
+candy
+chocolate
+convenience foods
+dessert-related lists
+paste
+spread
+dried foods
+dumplings
+fast food
+baked goods
+casseroles
+soy products
+food pastes
+garnishes
+gravies
+instant
+pickled
+rolled
+sauces
+dessert sauces
+fish sauces
+hot sauces
+instant sauces
+spreads
+stuffed dishes
+almond
+buns
+flatbreads
+quick breads
+sourdough breads
+sweet breads
+buckwheat
+crackers
+fried dough
+legume
+chickpea
+peanut
+maize
+noodles
+fried noodle dishes
+ramen
+pancakes
+pasta dishes
+rice
+fried rice
+rice cakes
+rice pudding
+fried rice
+rice
+beans
+sesame seed
+toast
+butter dishes
+cheese dishes
+fondues
+cheeses
+brined
+yogurt-based
+apple
+avocado
+banana
+broccoli
+cabbage
+cassava
+cherry
+eggplant
+garlic
+garlic bread
+grape
+lemon
+melon
+onion
+plum
+potato
+french fry
+salads
+arab
+thai
+soy-based
+squash
+pumpkin
+strawberry
+sweet potato
+tofu
+tomato
+clam
+cod
+crab
+fish head
+fish stews
+fried fish
+herring
+raw fish
+salmon
+shrimp
+sashimi
+tuna
+barbecue
+beef
+shredded beef
+steak
+veal
+chicken
+duck
+egg
+scrambled eggs
+goat
+hamburgers
+hot dogs
+kebabs
+lamb
+meatball
+pork
+bacon
+hams
+sausages
+cheese
+cream
+vegetable
+cakes
+candies
+chocolate bars
+chocolate-covered
+cookies
+shortbread
+desserts
+custard
+doughnuts
+pastries
+puddings
+baozi
+breakfast
+drinks
+brunch
+chifa
+christmas
+chutneys
+coconut
+coconut milk
+coffee
+tea
+bubble tea
+matcha
+matcha latte
+chocolate milk
+green tea
+black tea
+ice tea
+milk green tea
+hors d'oeuvre
+tapas
+maple syrup
+mushroom
+pastries
+pies
+tarts
+flans
+porridges
+relishes

@@ -2,11 +2,9 @@ import streamlit as st
 import spacy
 
 # Load our custom model
-nlp_ner = spacy.load("../NER/model-best")
+nlp_ner = spacy.load(r"C:\Users\Namitha\Desktop\capstone\NER\model-best")
 
-# Add the 'sentencizer' component to the pipeline
 # Add a sentence segmentation component to the SpaCy pipeline
-# Sentencizer uses punctuation to determine sentence boundaries
 nlp_ner.add_pipe('sentencizer')
 
 # Initialize the variables that will hold the input after NER implementation
@@ -23,7 +21,6 @@ Hey friend! 👋 Hope your day is as awesome as your favorite meal! We're here t
 
 Let's chat about your eating habits and preferences so we can create something perfect for you! Ready?
 """)
-
 
 # Number of people for meal plan
 st.markdown("**Awesome! Let's go! 🥳**")
@@ -63,7 +60,7 @@ def process_input(text):
         negation = False
         for token in sent:
             # Check if the current token is a negation word
-            if token.lower_ in negation_words:
+            if token.text in negation_words:
                 negation = True
             # Check if the token is an entity and its label is FOOD
             if token.ent_type_ == 'FOOD':
@@ -98,29 +95,3 @@ if st.button("Submit and Get Recommendations"):
     }
 
     st.write(user_profile)
-
-
-# Example of use case
-# Breakfast: Oatmeal while I am sitting on the couch
-# Lunch: sandwiches and pizza from across the street
-# Dinner: I will eat any vegetable soup with my family
-# Snacks: Dried fruits please
-
-# Returns
-# {
-#     "breakfast": [
-#         0:"Oatmeal"
-#         1:"couch"
-#     ]
-#     "lunch": [
-#         0:"sandwiches"
-#         1:"pizza"
-#         2:"street"
-#     ]
-#     "dinner": [
-#         0:"vegetable"
-#     ]
-#     "snacks": [
-#         0:"Dried fruits"
-#     ]
-# }
