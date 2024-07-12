@@ -1,5 +1,4 @@
 /.streamlit
-/app.py
 /create_assistant.py
 /test_openai.py
 /user_profile.json

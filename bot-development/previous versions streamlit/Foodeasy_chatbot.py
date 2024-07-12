@@ -7,7 +7,7 @@ import json
 import os
 
 # Set your OpenAI API key from secrets
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key="sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR")
 
 # Load the SpaCy model
 try:
