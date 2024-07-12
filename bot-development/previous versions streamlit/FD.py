@@ -3,7 +3,7 @@ import json
 import openai
 
 # Set your OpenAI API key
-openai.api_key = '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'
+openai.api_key = 'your-openai-api-key-here'
 
 # Function to get food recommendations from GPT-3.5
 def get_food_recommendations(user_profile, recommendation_type):
