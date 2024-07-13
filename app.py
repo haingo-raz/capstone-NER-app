@@ -10,7 +10,7 @@ import json
 client = OpenAI(api_key="sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR")
 
 # Load our custom model
-nlp_ner = spacy.load("NER/model-best")
+nlp_ner = spacy.load("./NER/model-best")
 
 # Add the 'sentencizer' component to the pipeline
 # Sentencizer uses punctuation to determine sentence boundaries
@@ -38,9 +38,8 @@ predefined_questions = [
     'How much time do you spend making breakfast?', # This question is only asked if the user usually have breakfast
     'What are some of your favorite foods?',
     'Are there any foods you dislike or avoid?',
-    'Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?',
+    'Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?'
     'Do you have any dietary needs or food restrictions? (milk, peanuts, gluten, etc.)',
-    'Do you like to add anything else'
 ]
 
 # Initialize the session state variables
@@ -56,6 +55,9 @@ if "user_profile" not in st.session_state:
 # Questions that have been asked
 if "questions" not in st.session_state:
     st.session_state.questions = predefined_questions
+# The predefined questions
+if "predefined_questions" not in st.session_state:
+    st.session_state.predefined_questions = predefined_questions
 if "current_question" not in st.session_state:
     st.session_state.current_question = "Let's start! Type anything in the chatbox to begin."
 # User responses
@@ -83,7 +85,6 @@ def extract_entities(text):
     preferences = []
     special_needs = []
     sentiments = 0
-    name=[]
     for ent in doc.ents:
         if ent.label_ == 'FOOD':
             sentence = next(sent for sent in doc.sents if ent.text in sent.text)
@@ -98,19 +99,16 @@ def extract_entities(text):
             preferences.append(ent.text)
         elif ent.label_ == 'SPECIALNEED': # TBD
             special_needs.append(ent.text)
-        elif ent.label == 'PERSON':
-            name=ent.text
 
-    return liked_items, disliked_items, preferences, special_needs, name
+    return liked_items, disliked_items, preferences, special_needs
 
 # Function used to save the extracted entities to the user profile
 # def update_profile_with_entities(liked_items, disliked_items, allergies, names):
-def update_profile_with_entities(liked_items, disliked_items, preferences, dietary_needs, name):
+def update_profile_with_entities(liked_items, disliked_items, preferences, dietary_needs):
     st.session_state.user_profile["liked_foods"].extend(liked_items) # Added the user profile json into session_state
     st.session_state.user_profile["disliked_foods"].extend(disliked_items)
     st.session_state.user_profile["eating_preferences"].extend(preferences)
     st.session_state.user_profile["dietary_needs"].extend(dietary_needs)
-    st.session_state.user_profile['name']=name
 
 # Function used to get the response from the OpenAI API
 def get_openai_response(prompt):
@@ -127,28 +125,15 @@ def get_openai_response(prompt):
 
 # Generate the next question
 def generate_next_question(profile):
-    # Check to see if user profile is complete
-    if is_profile_complete(profile):
-        goodbye_message = "Thank you for your input, Have a good Day"
-        st.session_state.messages({"role":"assistant","content":goodbye_message})
-        return ""
-
     chat_history = st.session_state.messages
     profile_prompt = f"Our current user profile is: {profile}\n\n"
     questions_prompt = f"Based on the given user profile and the chat history {chat_history}, ask the listed questions in order 1 by 1 only if the matching property is still empty or irrelevant:\n"
-    for question in st.session_state.questions:
+    for question in st.session_state.predefined_questions:
         questions_prompt += f"- {question}\n"
 
     prompt = profile_prompt + questions_prompt
     return get_openai_response(prompt)
     # Comment: Add a condition to stop the Q and A here
-
-# Find if all user profile has been filed.
-def is_profile_complete(user_profile):
-    for key, value in user_profile.items():
-        if value is None or value =="" or (isinstance(value,list) and not value):
-            return False
-        return True
 
 # Function to parse health goals from the response
 def parse_health_goals(response):
@@ -175,11 +160,11 @@ def update_profile_with_response(question, response):
     if ("is your name?" or "I call you?" or "call you?") in question.lower():
         st.session_state.user_profile["name"] = response
     elif ("old are you?" or "is your age" or "What is your age?") in question:
-        # st.session_state.user_profile["age"] = response
-        try:
-            st.session_state.user_profile["age"] = int(response)
-        except ValueError:
-            st.session_state.messages.append({"role": "assistant", "content": "I could not understand your reply. Can you please state your age in number-form (integer)?"})
+        st.session_state.user_profile["age"] = response
+        # try:
+        #     st.session_state.user_profile["age"] = int(response)
+        # except ValueError:
+        #     st.session_state.messages.append({"role": "assistant", "content": "I could not understand your reply. Can you please state your age in number-form (integer)?"})
     elif ("usually have breakfast?" or "Do you eat breakfast?" or "Do you have breakfast?" or "Do you have breakfast in the morning?" or "Do you have breakfast every day?" or "Do you have breakfast every morning?" or "Do you have breakfast usually?" or "Do you have breakfast often?" or "Do you have breakfast sometimes?") in question.lower():
         st.session_state.user_profile["have_breakfast"] = response
         if response.lower() in ["none", "nothing", "no", "don't eat breakfast"]:
@@ -191,16 +176,16 @@ def update_profile_with_response(question, response):
     elif "health goals" in question:
         st.session_state.user_profile["top_health_goals"].extend(parse_health_goals(response))
     elif "favorite foods" in question.lower() or "foods you like" in question.lower():
-        liked_items, _, _, _, _ = extract_entities(response)
+        liked_items, _, _, _ = extract_entities(response)
         st.session_state.user_profile["liked_foods"].extend(liked_items)
     elif "foods you dislike" in question.lower() or "foods you avoid" in question.lower():
-        _, disliked_items, _, _, _ = extract_entities(response)
+        _, disliked_items, _, _ = extract_entities(response)
         st.session_state.user_profile["disliked_foods"].extend(disliked_items)
     elif "diet or eating preferences" in question.lower():
-        _, _, preferences, _, _= extract_entities(response)
+        _, _, preferences, _ = extract_entities(response)
         st.session_state.user_profile["preferences"].extend(preferences)
     elif "food allergies or intolerances" in question.lower():
-        _, _, _, special_needs, _ = extract_entities(response)
+        _, _, _, special_needs = extract_entities(response)
         st.session_state.user_profile["dietary_needs"].extend(special_needs)
     # Comment: end Q & A when all the questions are answered
 
@@ -216,9 +201,9 @@ def on_input_change():
     st.session_state.responses.append(user_input)
 
     # Extract entities from the user input
-    liked_items, disliked_items, preferences, dietary_needs, name = extract_entities(user_input)
+    liked_items, disliked_items, preferences, dietary_needs = extract_entities(user_input)
     # Update the user profile with the extracted entities
-    update_profile_with_entities(liked_items, disliked_items, preferences, dietary_needs, name)
+    update_profile_with_entities(liked_items, disliked_items, preferences, dietary_needs)
 
     # Current question
     current_question = st.session_state.current_question
