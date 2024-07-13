@@ -130,7 +130,7 @@ def generate_next_question(profile):
     # Check to see if user profile is complete
     if is_profile_complete(profile):
         goodbye_message = "Thank you for your input, Have a good Day"
-        st.session_state.messages({"role":"assistant","content":prompt})
+        st.session_state.messages({"role":"assistant","content":goodbye_message})
         return ""
 
     chat_history = st.session_state.messages
