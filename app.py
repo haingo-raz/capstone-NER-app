@@ -8,8 +8,7 @@ import os
 
 
 # Set your OpenAI API key
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+client = OpenAI(api_key=st.secrets["openai_apikey"])
 
 
 # Load our custom model
