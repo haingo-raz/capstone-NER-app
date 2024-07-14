@@ -1,23 +1,23 @@
 import streamlit as st
 import spacy
 from openai import OpenAI
-from textblob import TextBlob
 import re
 import json
 import os
-
+ 
 # Set your OpenAI API key from secrets
-client = OpenAI(api_key="sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR")
-
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+ 
 # Load the SpaCy model
 try:
-    nlp_ner = spacy.load("en_core_web_sm")
+    nlp_ner = spacy.load("../../NER/model-best")
 except OSError as e:
     st.error(f"Error loading SpaCy model: {e}")
-
+ 
 # Add the 'sentencizer' component to the pipeline
 nlp_ner.add_pipe('sentencizer')
-
+ 
 # Initialize the user profile skeleton
 user_profile = {
     "name": "",
@@ -30,7 +30,7 @@ user_profile = {
     "dietary_needs": [],
     "other_information": ""
 }
-
+ 
 # Reordered predefined questions
 predefined_questions = [
     'Let\'s start! What do you want me to call you?',
@@ -38,12 +38,14 @@ predefined_questions = [
     'What are your top health goals with Foodeasy?\n1. Lose weight\n2. Save money\n3. Simplify cooking\n4. Save time ⏰\n5. Try new things 🌟\n6. Improve health 💪\n7. Grocery shop less 🛒\n8. Waste less food 🌱\n9. Other (let us know!) 📝',
     'What do you usually have for breakfast?',
     'How much time do you spend making it (breakfast)?',
-    'What are your food preferences (liked and disliked foods)?',
-    'Do you have any dietary needs? (e.g., Dairy-Free, Gluten-Free, Soy-Free, Tree Nut-Free, Peanut-Free, Egg-Free, Shellfish-Free, Vegan, Vegetarian)',
-    'Is there any other dietary need or any other information you would like to share? Please provide the details.',
+    'What are some of your favorite foods?',
+    'Are there any foods you dislike or avoid?',
+    'Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?',
+    'Do you have any food allergies or intolerances (e.g., gluten, dairy, nuts)?',
+    'Please provide any other dietary needs or additional information you would like to share.',
     'Have you provided all the information you wanted to share? (yes or no)'
 ]
-
+ 
 # Initialize the session state variables
 if "initialized" not in st.session_state:
     st.session_state.initialized = True
@@ -52,7 +54,7 @@ if "initialized" not in st.session_state:
     st.session_state.user_profile = user_profile
     st.session_state.questions = predefined_questions
     st.session_state.responses = []
-
+ 
 # Function to save user profile and chat history to a JSON file
 def save_data():
     data = {
@@ -64,56 +66,52 @@ def save_data():
     }
     with open("chatbot_data.json", "w") as f:
         json.dump(data, f)
-
+ 
+# Function to extract entities from the text
 def extract_entities(text):
     doc = nlp_ner(text.lower())
     negation_words = ['not', 'no', 'but', 'dislike', 'hate', 'non', "don't", "won't", "isn't"]
+    positive_words = ['love', 'like', 'want', 'enjoy', 'prefer', 'adore', 'crave', 'desire', 'fancy', 'wish', 'favor', 'cherish', 'appreciate']
     liked_items = []
     disliked_items = []
+    preferences = []
+    special_needs = []
     names = []
-    sentiments = 0
-
+ 
     for ent in doc.ents:
         if ent.label_ == 'FOOD':
             sentence = next(sent for sent in doc.sents if ent.text in sent.text)
-            blob = TextBlob(sentence.text)
-            sentiments = blob.sentiment.polarity
             if any(neg_word in sentence.text for neg_word in negation_words):
-                sentiments = -abs(sentiments)
-            if sentiments < 0:
                 disliked_items.append(ent.text)
-            else:
+            elif any(pos_word in sentence.text for pos_word in positive_words):
                 liked_items.append(ent.text)
+        elif ent.label_ == 'PREFERENCE':
+            preferences.append(ent.text)
+        elif ent.label_ == 'SPECIALNEED':
+            special_needs.append(ent.text)
         elif ent.label_ == 'PERSON':
             names.append(ent.text)
-
-    return liked_items, disliked_items, names
-
-def update_profile_with_entities(liked_items, disliked_items, names):
+ 
+    return liked_items, disliked_items, preferences, special_needs, names
+ 
+# Update the profile with the extracted entities
+def update_profile_with_entities(liked_items, disliked_items, preferences, special_needs, names):
     st.session_state.user_profile["liked_foods"].extend(liked_items)
     st.session_state.user_profile["disliked_foods"].extend(disliked_items)
+    st.session_state.user_profile["dietary_needs"].extend(special_needs)
+    st.session_state.user_profile["health_goals"].extend(preferences)
     if names:
         st.session_state.user_profile["name"] = names[0]
-
-def get_openai_response(prompt):
-    system = [{"role": "system", "content": "You are an assistant that asks users a question to gather information about them."}]
-    chat_history = st.session_state.messages
-    user = [{"role": "user", "content": prompt}]
-    response = client.chat.completions.create(
-        messages=system + chat_history + user,
-        model="gpt-3.5-turbo",
-        max_tokens=50,
-        top_p=0.9,
-    )
-    return response.choices[0].message.content
-
+ 
+# Function to generate the next question
 def generate_next_question(profile):
     st.session_state.current_question += 1
     if st.session_state.current_question < len(st.session_state.questions):
         return st.session_state.questions[st.session_state.current_question]
     else:
         return "Thank you! We have collected all the information we need."
-
+ 
+# Function to parse health goals from the response
 def parse_health_goals(response):
     goals_mapping = {
         "1": "Lose weight",
@@ -125,13 +123,14 @@ def parse_health_goals(response):
         "7": "Grocery shop less",
         "8": "Waste less food"
     }
-    
+   
     goals = []
     for key, value in goals_mapping.items():
         if re.search(rf'\b{key}\b', response) or re.search(value.lower(), response.lower()):
             goals.append(value)
     return goals
-
+ 
+# Handling user responses
 def update_profile_with_response(question, response):
     if "call you" in question.lower():
         st.session_state.user_profile["name"] = response
@@ -141,7 +140,6 @@ def update_profile_with_response(question, response):
         except ValueError:
             st.session_state.messages.append({"role": "assistant", "content": "I could not understand your reply. Can you please state your age in number-form (integer)?"})
             st.session_state.current_question -= 1
-            return
     elif "usually have for breakfast" in question.lower():
         st.session_state.user_profile["breakfast"] = response
         if response.lower() in ["none", "nothing", "no", "don't eat breakfast"]:
@@ -150,12 +148,18 @@ def update_profile_with_response(question, response):
                 st.session_state.questions.remove("How much time do you spend making it (breakfast)?")
     elif "health goals" in question.lower():
         st.session_state.user_profile["health_goals"].extend(parse_health_goals(response))
-    elif "food preferences" in question.lower():
-        liked_items, disliked_items, _ = extract_entities(response)
+    elif "favorite foods" in question.lower() or "foods you like" in question.lower():
+        liked_items, _, _, _, _ = extract_entities(response)
         st.session_state.user_profile["liked_foods"].extend(liked_items)
+    elif "foods you dislike" in question.lower() or "foods you avoid" in question.lower():
+        _, disliked_items, _, _, _ = extract_entities(response)
         st.session_state.user_profile["disliked_foods"].extend(disliked_items)
-    elif "dietary needs" in question.lower():
-        st.session_state.user_profile["dietary_needs"].extend(response.split(","))
+    elif "diet or eating preferences" in question.lower():
+        _, _, preferences, _, _ = extract_entities(response)
+        st.session_state.user_profile["dietary_needs"].extend(preferences)
+    elif "food allergies or intolerances" in question.lower():
+        _, _, _, special_needs, _ = extract_entities(response)
+        st.session_state.user_profile["dietary_needs"].extend(special_needs)
     elif "other dietary need" in question.lower() or "other information" in question.lower():
         st.session_state.user_profile["other_information"] = response
     elif "provided all the information" in question.lower():
@@ -163,39 +167,42 @@ def update_profile_with_response(question, response):
             st.session_state.messages.append({"role": "assistant", "content": "Thank you! We have collected all the information we need."})
         else:
             st.session_state.messages.append({"role": "assistant", "content": "Please provide the remaining information."})
-            return  # Do not increment the current question index
-
+            st.session_state.current_question -= 1  # Ask the same question again
+ 
+# Handling input change
 def on_input_change():
     user_input = st.session_state.user_input
     st.session_state.responses.append(user_input)
-
-    liked_items, disliked_items, names = extract_entities(user_input)
-    update_profile_with_entities(liked_items, disliked_items, names)
-
+ 
     current_question = st.session_state.questions[st.session_state.current_question]
-    update_profile_with_response(current_question, user_input)
-
+ 
+    if "favorite foods" in current_question.lower() or "foods you dislike" in current_question.lower() or "diet or eating preferences" in current_question.lower() or "food allergies or intolerances" in current_question.lower():
+        liked_items, disliked_items, preferences, special_needs, _ = extract_entities(user_input)
+        update_profile_with_entities(liked_items, disliked_items, preferences, special_needs, [])
+    else:
+        update_profile_with_response(current_question, user_input)
+ 
     st.session_state.messages.append({"role": "user", "content": user_input})
-
+ 
     next_question = generate_next_question(st.session_state.user_profile)
     st.session_state.messages.append({"role": "assistant", "content": next_question})
-
+ 
     # Save data to JSON file
     save_data()
-
+ 
 st.title("FoodEasy Assistant")
 st.markdown("""
 Hello! Welcome to FoodEasy. We help you create personalized meal plans based on your profile.
 """)
-
+ 
 chat_container = st.container()
 with chat_container:
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-
+ 
 user_input = st.chat_input("Type your response here...", on_submit=on_input_change, key="user_input")
-
+ 
 sidebar = st.sidebar
 sidebar.markdown("## Gathered user information:")
 sidebar.write(st.session_state.user_profile)

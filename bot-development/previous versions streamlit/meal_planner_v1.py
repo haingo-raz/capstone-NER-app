@@ -2,9 +2,11 @@ import streamlit as st
 import openai
 from openai import OpenAI
 from streamlit_chat import message
+import os
 
 # Set your OpenAI API key
-openai.api_key = "sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR"
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 # Define the predefined questions at the top of the script
 predefined_questions = [

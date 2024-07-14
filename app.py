@@ -4,10 +4,13 @@ from openai import OpenAI
 import re
 from textblob import TextBlob
 import json
+import os
 
 
 # Set your OpenAI API key
-client = OpenAI(api_key="sk-proj-h9EdCxTdm625EJbKGFAxT3BlbkFJSWK3jfmGcbqDX2CZDxtR")
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
 
 # Load our custom model
 nlp_ner = spacy.load("./NER/model-best")
