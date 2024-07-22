@@ -14,7 +14,7 @@ nlp_ner = spacy.load("./NER/model-best")
 # sentence boundaries
 nlp_ner.add_pipe('sentencizer')
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 # Initialize the user profile skeleton
 user_profile = {
@@ -73,6 +73,7 @@ def save_data():
         json.dump(data, f, indent=4)
 
 # Function to extract entities using spaCy and Textblob
+
 def extract_entities(text):
     doc = nlp_ner(text)
     # SpaCy in-built NER model can be used to extract PERSON and CARDINAL or DATA entities
@@ -82,31 +83,37 @@ def extract_entities(text):
     disliked_items = []
     eating_preferences = []
     special_needs = []
+    ner_tags=[]
     name = st.session_state.user_profile["name"]
     age = st.session_state.user_profile["age"]
-
-    for ent in doc.ents:
-        if ent.label_ == 'FOOD':
-            sentence = next((sent for sent in doc.sents if ent.text in sent.text), None)
-            if sentence:
-                blob = TextBlob(sentence.text)
-                sentiment = blob.sentiment.polarity
-                if sentiment < 0:
-                    disliked_items.append(ent.text)
-                else:
-                    liked_items.append(ent.text)           
-                # How to save the food items if the user input does not contain any sentiment, for example just "banana"
- 
-        elif ent.label_ == 'PREFERENCE':
-            eating_preferences.append(ent.text)
-        elif ent.label_ == 'SPECIALNEED':
-            special_needs.append(ent.text)
 
     for ent1 in doc1.ents:
         if ent1.label_ == 'PERSON':
             name = ent1.text
         elif ent1.label_ == 'DATE' or ent1.label_ == 'CARDINAL':
-            age = ent1.text
+            age_match = re.search(r'\d+', ent1.text)
+            if age_match:
+                age = age_match.group()
+
+    ner_tags = [(ent1.text, ent1.start_char, ent1.end_char, ent1.label_) for ent1 in doc1.ents if ent1.label_ in ('PERSON', 'DATE', 'CARDINAL')]
+
+    for ent in doc.ents:
+        if not any(ent.start_char >= start and ent.end_char <= end for _, start, end, _ in ner_tags):
+            if ent.label_ == 'FOOD':
+                sentence = next((sent for sent in doc.sents if ent.text in sent.text), None)
+                if sentence:
+                    blob = TextBlob(sentence.text)
+                    sentiment = blob.sentiment.polarity
+                    if sentiment < 0:
+                        disliked_items.append(ent.text)
+                    else:
+                        liked_items.append(ent.text)
+                # How to save the food items if the user input does not contain any sentiment, for example just "banana"
+ 
+            elif ent.label_ == 'PREFERENCE':
+                eating_preferences.append(ent.text)
+            elif ent.label_ == 'SPECIALNEED':
+                special_needs.append(ent.text)
 
     return liked_items, disliked_items, eating_preferences, special_needs, name, age
 
