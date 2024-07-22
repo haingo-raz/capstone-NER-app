@@ -1,0 +1,75 @@
+{
+    "user_profile": {
+        "name": "nami",
+        "age": 25,
+        "top_health_goals": [
+            "Lose weight"
+        ],
+        "have_breakfast": "yes",
+        "breakfast_preparation_time": null,
+        "liked_foods": [],
+        "disliked_foods": [],
+        "eating_preferences": [],
+        "dietary_needs": []
+    },
+    "messages": [
+        {
+            "role": "assistant",
+            "content": "What is your name?"
+        },
+        {
+            "role": "user",
+            "content": "nami"
+        },
+        {
+            "role": "assistant",
+            "content": "How old are you?"
+        },
+        {
+            "role": "user",
+            "content": "25"
+        },
+        {
+            "role": "assistant",
+            "content": "What are your top health goals with Foodeasy?\n1. Lose weight\n2. Save money\n3. Simplify cooking\n4. Save time \u23f0\n5. Try new things \ud83c\udf1f\n6. Improve health \ud83d\udcaa\n7. Grocery shop less \ud83d\uded2\n8. Waste less food \ud83c\udf31\n9. Other (let us know!) \ud83d\udcdd"
+        },
+        {
+            "role": "user",
+            "content": "1"
+        },
+        {
+            "role": "assistant",
+            "content": "Do you usually have breakfast?"
+        },
+        {
+            "role": "user",
+            "content": "yes"
+        },
+        {
+            "role": "assistant",
+            "content": "How much time do you spend making breakfast?"
+        },
+        {
+            "role": "assistant",
+            "content": "Please provide a valid number of minutes (0-1439)."
+        },
+        {
+            "role": "user",
+            "content": "spicy food"
+        }
+    ],
+    "responses": [
+        "nami",
+        "25",
+        "1",
+        "yes",
+        "spicy food"
+    ],
+    "current_question": "How much time do you spend making breakfast?",
+    "questions": [
+        "What are some of your favorite foods?",
+        "Are there any foods you dislike or avoid?",
+        "Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?",
+        "Do you have any dietary needs or food restrictions (e.g., milk, peanuts, gluten)?"
+    ]
+}

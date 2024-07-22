@@ -4,13 +4,11 @@ import streamlit as st
 import spacy
 from textblob import TextBlob
 
-client= '@@'
-
-# Load our custom model
+# Load spaCy model
 nlp_ner = spacy.load("./NER/model-best")
 nlp_ner.add_pipe('sentencizer')
 
-# Initialize the user profile skeleton
+# Initialize user profile
 user_profile = {
     "name": "",
     "age": None,
@@ -23,8 +21,8 @@ user_profile = {
     "dietary_needs": [],
 }
 
-# Predefined questions
-predefined_questions = [
+# Define questions
+questions = [
     'What is your name?',
     'How old are you?',
     'What are your top health goals with Foodeasy?\n1. Lose weight\n2. Save money\n3. Simplify cooking\n4. Save time ⏰\n5. Try new things 🌟\n6. Improve health 💪\n7. Grocery shop less 🛒\n8. Waste less food 🌱\n9. Other (let us know!) 📝', 
@@ -36,19 +34,19 @@ predefined_questions = [
     'Do you have any dietary needs or food restrictions (e.g., milk, peanuts, gluten)?',
 ]
 
-# Initialize the session state variables
+# Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "user_profile" not in st.session_state:  
     st.session_state.user_profile = user_profile
 if "questions" not in st.session_state:
-    st.session_state.questions = predefined_questions.copy()
+    st.session_state.questions = questions.copy()
 if "current_question" not in st.session_state:
     st.session_state.current_question = st.session_state.questions.pop(0)
 if 'responses' not in st.session_state:
     st.session_state.responses = []
 
-# Function to save user profile and chat history to a JSON file
+# Save data to JSON file
 def save_data():
     data = {
         "user_profile": st.session_state.user_profile,
@@ -60,7 +58,7 @@ def save_data():
     with open("chatbot_data.json", "w") as f:
         json.dump(data, f, indent=4)
 
-# Function to extract entities using spaCy
+# Extract entities using spaCy
 def extract_entities(text):
     doc = nlp_ner(text.lower())
     liked_items = []
@@ -83,14 +81,14 @@ def extract_entities(text):
             special_needs.append(ent.text)
     return liked_items, disliked_items, preferences, special_needs
 
-# Function used to save the extracted entities to the user profile
+# Update profile with extracted entities
 def update_profile_with_entities(liked_items, disliked_items, preferences, dietary_needs):
     st.session_state.user_profile["liked_foods"].extend(liked_items)
     st.session_state.user_profile["disliked_foods"].extend(disliked_items)
     st.session_state.user_profile["eating_preferences"].extend(preferences)
     st.session_state.user_profile["dietary_needs"].extend(dietary_needs)
 
-# Function to parse health goals from the response
+# Parse health goals from response
 def parse_health_goals(response):
     goals_mapping = {
         "1": "Lose weight",
@@ -108,15 +106,17 @@ def parse_health_goals(response):
             goals.append(value)
     return goals
 
-# Function to validate age
+# Validate user input
 def is_valid_age(age):
     return age.isdigit() and 0 <= int(age) <= 120
 
-# Function to validate name
 def is_valid_name(name):
     return bool(re.match(r'^[A-Za-z\s]+$', name))
 
-# Handling user responses
+def is_valid_minutes(input_str):
+    return re.fullmatch(r'\d+', input_str) and 0 <= int(input_str) < 1440
+
+# Update profile with response
 def update_profile_with_response(question, response):
     if "name" in question.lower():
         if is_valid_name(response):
@@ -132,13 +132,17 @@ def update_profile_with_response(question, response):
         else:
             st.session_state.messages.append({"role": "assistant", "content": "Please provide a valid age between 0 and 120."})
             return False
+    elif "time" in question.lower() and "breakfast" in question.lower():
+        if is_valid_minutes(response):
+            st.session_state.user_profile["breakfast_preparation_time"] = int(response)
+            return True
+        else:
+            st.session_state.messages.append({"role": "assistant", "content": "Please provide a valid number of minutes (0-1439)."})
+            return False
     elif "breakfast" in question.lower():
         st.session_state.user_profile["have_breakfast"] = response
         if response.lower() in ["none", "nothing", "no", "don't eat breakfast"]:
             st.session_state.user_profile["breakfast_preparation_time"] = None
-        return True
-    elif "time" in question.lower():
-        st.session_state.user_profile["breakfast_preparation_time"] = response
         return True
     elif "health goals" in question.lower():
         st.session_state.user_profile["top_health_goals"].extend(parse_health_goals(response))
@@ -167,7 +171,7 @@ def generate_next_question():
         return st.session_state.questions.pop(0)
     return "Thank you! All questions have been answered."
 
-# Called every time the user sends a new input
+# Handle user input changes
 def on_input_change():
     user_input = st.session_state.input_text
     st.session_state.responses.append(user_input)
@@ -182,6 +186,7 @@ def on_input_change():
         next_question = generate_next_question()
         st.session_state.messages.append({"role": "assistant", "content": next_question})
         st.session_state.current_question = next_question
+        st.session_state.input_text = ""  # Clear the input field
     else:
         st.session_state.messages.append({"role": "user", "content": user_input})
 
@@ -190,11 +195,27 @@ def on_input_change():
 # Streamlit UI
 st.title("Personalized Meal Recommendation Chatbot")
 
-# Display initial question if the chat is empty
+# Display initial question if chat is empty
 if not st.session_state.messages:
     st.session_state.messages.append({"role": "assistant", "content": st.session_state.current_question})
 
 for msg in st.session_state.messages:
-    st.write(f"**{msg['role']}**: {msg['content']}")
+    st.write(f"{msg['role']}: {msg['content']}")
 
-st.text_input("Type your response here...", key="input_text", on_change=on_input_change)
+# Placeholder text based on current question
+current_question = st.session_state.current_question
+if "breakfast" in current_question.lower() and "time" in current_question.lower():
+    placeholder_text = "Enter time in minutes"
+elif "favorite foods" in current_question.lower():
+    placeholder_text = "List your favorite foods, separated by commas"
+elif "dislike" in current_question.lower() or "avoid" in current_question.lower():
+    placeholder_text = "List foods you dislike or avoid, separated by commas"
+elif "diet" in current_question.lower() or "eating preferences" in current_question.lower():
+    placeholder_text = "List any specific diets or eating preferences"
+elif "dietary needs" in current_question.lower():
+    placeholder_text = "List any dietary needs or food restrictions"
+else:
+    placeholder_text = "Type your response here..."
+
+# Text input box with the placeholder text
+st.text_input("Your response:", key="input_text", placeholder=placeholder_text, on_change=on_input_change)
