@@ -194,7 +194,10 @@ def update_profile_with_response(question, response):
     if ("your name" or "I call you" or "call you") in question.lower():
         if is_valid_name(response):
             _, _, _, _, name, _ = extract_entities(response)
-            st.session_state.user_profile["name"] = name
+            if name:
+                st.session_state.user_profile["name"] = name
+            else:
+                st.session_state.user_profile["name"] = response
             return True
         else:
             st.session_state.messages.append({"role": "assistant", "content": "Please provide a valid name. Only letters and spaces are allowed."})
@@ -202,7 +205,7 @@ def update_profile_with_response(question, response):
     elif ("old are you" or "your age" or "What is your age") in question:
         # Extract digit if only a digit was given
         if is_valid_age(response):
-            st.session_state.user_profile["age"] = int(response)
+            st.session_state.user_profile["age"] = response
             return True
         # If the users provide their age in letters or the digit within a sentence, manually extract the digit using spaCy built-in model
         elif is_valid_age(response) == False:
@@ -247,7 +250,7 @@ def on_input_change():
     # This line allows the user profile to be updated regardless of the current question
     # FOR NOW DOES NOT UPDATE eating_preferences, name and age
     liked_items, disliked_items, eating_preferences, special_needs, name, age = extract_entities(user_input)
-    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, st.session_state.user_profile["name"], st.session_state.user_profile["age"])
+    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, name, age)
 
     # Get the current question and update the user profile based on that current question and provided input
     current_question = st.session_state.current_question
