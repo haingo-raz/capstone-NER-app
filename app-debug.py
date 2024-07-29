@@ -172,6 +172,11 @@ def parse_health_goals(response):
     for key, value in goals_mapping.items():
         if re.search(rf'\b{key}\b', response) or re.search(value.lower(), response.lower()):
             goals.append(value)
+    
+    # If no matching goal is found, return the raw response
+    if not goals:
+        goals.append(response)
+    
     return goals
 
 def is_valid_age(age):
