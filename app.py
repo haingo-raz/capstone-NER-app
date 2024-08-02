@@ -250,7 +250,7 @@ def on_input_change():
     # This line allows the user profile to be updated regardless of the current question
     # FOR NOW DOES NOT UPDATE eating_preferences, name and age
     liked_items, disliked_items, eating_preferences, special_needs, name, age = extract_entities(user_input)
-    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, name, age)
+    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, st.session_state.user_profile["name"], st.session_state.user_profile["age"])
 
     # Get the current question and update the user profile based on that current question and provided input
     current_question = st.session_state.current_question
