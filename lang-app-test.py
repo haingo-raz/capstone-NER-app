@@ -7,23 +7,34 @@ from langgraph.checkpoint.memory import MemorySaver
 import json
 import uuid
 from typing import List, Literal
+import os
+import spacy
+from textblob import TextBlob
 
-# Define your template
-template = """Your job is to get information from a user by asking them these questions one by one.
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
+template = """Your job is to get information from a user by asking the following questions one by one.
+
 You should get the following information from them:
+
 - What the name of the user is
 - What is their age
 - What kind of foods they like
 - What kind of foods they dislike
 - What is their dietary restrictions or special needs
 - What is their eating preferences
+
 If you are not able to discern this info, ask them to clarify! Do not attempt to wildly guess.
-After you are able to discern all the information, return a JSON object with the gathered information."""
+
+After you are able to discern all the information, call the relevant tool, and return a json ."""
+
 
 def get_messages_info(messages):
     return [SystemMessage(content=template)] + messages
 
 class PromptInstructions(BaseModel):
+    """Instructions on how to prompt the LLM."""
+
     name: str
     age: int
     liked_foods: List[str]
@@ -31,28 +42,84 @@ class PromptInstructions(BaseModel):
     special_needs: List[str]
     eating_preferences: List[str]
 
-# Initialize LLM and chain
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
 llm_with_tool = llm.bind_tools([PromptInstructions])
+
 chain = get_messages_info | llm_with_tool
 
+# Load your custom NER model
+nlp_ner = spacy.load("./NER/model-best")
+nlp_ner.add_pipe('sentencizer')
+def extract_entities(text):
+    doc = nlp_ner(text)
+    entities = {
+        "liked_foods": [],
+        "disliked_foods": [],
+        "eating_preferences": [],
+        "special_needs": []
+    }
+    ner_tags=[]
+
+    for ent in doc.ents:
+        if not any(ent.start_char >= start and ent.end_char <= end for _, start, end, _ in ner_tags):
+            if ent.label_ == 'FOOD':
+                sentence = next((sent for sent in doc.sents if ent.text in sent.text), None)
+                if sentence:
+                    blob = TextBlob(sentence.text)
+                    sentiment = blob.sentiment.polarity
+                    if sentiment < 0:
+                        entities["liked_foods"].append(ent.text)
+                    else:
+                        entities["disliked_foods"].append(ent.text)
+                # How to save the food items if the user input does not contain any sentiment, for example just "banana"
+            elif ent.label_ == 'PREFERENCE':
+                entities["eating_preferences"].append(ent.text)
+            elif ent.label_ == 'SPECIALNEED':
+                entities["special_needs"].append(ent.text)
+
+    return entities
+
 # Define prompt system
-prompt_system = """Based on the following requirements, return a JSON format of the user profile you gathered:
+# New system prompt
+prompt_system = """Based on the following requirements, return a json format of the user profile you gathered:
+
 {reqs}"""
 
+# Function to get the messages for the prompt
+# Will only get messages AFTER the tool call
 def get_prompt_messages(messages: list):
     tool_call = None
     other_msgs = []
+    user_message = None
     for m in messages:
         if isinstance(m, AIMessage) and m.tool_calls:
             tool_call = m.tool_calls[0]["args"]
         elif isinstance(m, ToolMessage):
             continue
         elif isinstance(m, HumanMessage):
+            user_message = m.content
+        elif tool_call is not None:
             other_msgs.append(m)
+            
+    if user_message:
+        ner_entities = extract_entities(user_message)
+
+    if tool_call:
+        name = tool_call.get("name", "")
+        age = tool_call.get("age", "")
+        #tool_call_text = json.dumps(tool_call)
+        #ner_entities = extract_entities(tool_call_text)
+
+        # Update tool_call with the extracted entities
+        tool_call["liked_foods"] = tool_call.get("liked_foods", []) + ner_entities["liked_foods"]
+        tool_call["disliked_foods"] = tool_call.get("disliked_foods", []) + ner_entities["disliked_foods"]
+        tool_call["eating_preferences"] = tool_call.get("eating_preferences", []) + ner_entities["eating_preferences"]
+        tool_call["special_needs"] = tool_call.get("special_needs", []) + ner_entities["special_needs"]
+    
     return [SystemMessage(content=prompt_system.format(reqs=json.dumps(tool_call, indent=4)))] + other_msgs
 
 prompt_gen_chain = get_prompt_messages | llm
+
 
 def get_state(messages) -> Literal["add_tool_message", "info", "__end__"]:
     if isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
@@ -61,10 +128,12 @@ def get_state(messages) -> Literal["add_tool_message", "info", "__end__"]:
         return END
     return "info"
 
+
 memory = MemorySaver()
 workflow = MessageGraph()
 workflow.add_node("info", chain)
 workflow.add_node("prompt", prompt_gen_chain)
+
 
 @workflow.add_node
 def add_tool_message(state: list):
@@ -78,48 +147,9 @@ workflow.add_edge("prompt", END)
 workflow.add_edge(START, "info")
 graph = workflow.compile(checkpointer=memory)
 
-import spacy
-from textblob import TextBlob
-
-# Load spaCy model
-nlp_ner = spacy.load("./NER/model-best")
-nlp_ner.add_pipe('sentencizer')
-
-# Initialize the session state variables
-if "user_profile" not in st.session_state:
-    st.session_state.user_profile = {
-        "name": "",
-        "age": None,
-        "liked_foods": [],
-        "disliked_foods": [],
-        "eating_preferences": [],
-        "special_needs": [],
-    }
+# Initialize Streamlit session state
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Let's start! Type anything in the chatbox to begin."}]
-
-# Function to extract entities
-def extract_entities(text):
-    doc = nlp_ner(text)
-    entities = {
-        "liked_foods": [],
-        "disliked_foods": [],
-        "eating_preferences": [],
-        "special_needs": []
-    }
-    for ent in doc.ents:
-        if ent.label_ == 'FOOD':
-            blob = TextBlob(ent.text)
-            sentiment = blob.sentiment.polarity
-            if sentiment < 0:
-                entities["disliked_foods"].append(ent.text)
-            else:
-                entities["liked_foods"].append(ent.text)
-        elif ent.label_ == 'PREFERENCE':
-            entities["eating_preferences"].append(ent.text)
-        elif ent.label_ == 'SPECIALNEED':
-            entities["special_needs"].append(ent.text)
-    return entities
+    st.session_state.messages= [{"role": "assistant", "content": "Let's start! Type anything in the chatbox to begin."}]
 
 # Streamlit UI
 st.title("FoodEasy Assistant")
@@ -132,6 +162,7 @@ with st.container(height=410):
 
 # User input
 prompt = st.chat_input("Type your response here...", key='user_input')
+
 
 config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 if prompt:    
