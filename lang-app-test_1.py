@@ -42,7 +42,7 @@ class PromptInstructions(BaseModel):
     special_needs: List[str]
     eating_preferences: List[str]
 
-llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
+llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo", max_tokens=100)
 llm_with_tool = llm.bind_tools([PromptInstructions])
 
 chain = get_messages_info | llm_with_tool
@@ -147,13 +147,36 @@ workflow.add_edge("prompt", END)
 workflow.add_edge(START, "info")
 graph = workflow.compile(checkpointer=memory)
 
+config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 def on_input_change():
     user_input = st.session_state.user_input
     st.session_state['messages'].append({"role": "user", "content": user_input})
 
+    json_data = get_prompt_messages(st.session_state['messages'])
+    st.session_state.json_data_print = json_data
+
+    # Process user input
+    if prompt == 'q' or prompt == 'Q':
+        print("AI: Byebye")
+        print(json_data)
+        st.stop()
+
+    output = None
+    for output in graph.stream([HumanMessage(content=user_input)], config=config, stream_mode="updates"):
+        last_message = next(iter(output.values()))
+
+
+    st.session_state['messages'].append({"role": "assistant", "content": last_message.content})
+
+    if output and "prompt" in output:
+        st.session_state['messages'].append({"role": "assistant", "content": "Done"})
+
 # Initialize Streamlit session state
 if "messages" not in st.session_state:
     st.session_state.messages= [{"role": "assistant", "content": "Let's start! Type anything in the chatbox to begin."}]
+
+if "json_data_print" not in st.session_state:
+    st.session_state.json_data_print = {}
 
 # Streamlit UI
 st.title("FoodEasy Assistant")
@@ -166,30 +189,9 @@ with st.container(height=410):
 # User input
 prompt = st.chat_input("Type your response here..., use (Q or q) to quit", on_submit=on_input_change, key='user_input')
 
-config = {"configurable": {"thread_id": str(uuid.uuid4())}}
-if prompt:
-    # Extract JSON data from prompt_gen_chain
 
-    json_data = get_prompt_messages(st.session_state['messages'])
-
-    # Process user input
-    if prompt == 'q' or prompt == 'Q':
-        print("AI: Byebye")
-        print(json_data)
-        st.stop()
-
-    output = None
-    for output in graph.stream([HumanMessage(content=prompt)], config=config, stream_mode="updates"):
-        last_message = next(iter(output.values()))
-
-
-    st.session_state['messages'].append({"role": "assistant", "content": last_message.content})
-
-    if output and "prompt" in output:
-        st.session_state['messages'].append({"role": "assistant", "content": "Done"})
-
-    # Display user profile
-    sidebar = st.sidebar
-    sidebar.markdown("Gathered user information:")
-    sidebar.write(json_data)
-    sidebar.write(st.session_state['messages'])
+# Display user profile
+sidebar = st.sidebar
+sidebar.markdown("Gathered user information:")
+sidebar.write(st.session_state.json_data_print)
+sidebar.write(st.session_state['messages'])
