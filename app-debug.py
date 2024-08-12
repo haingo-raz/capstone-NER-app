@@ -7,7 +7,7 @@ import json
 import re
 
 # Set your OpenAI API key
-# client = OpenAI(api_key=st.secrets["openai_apikey"])
+client = OpenAI(api_key=st.secrets["openai_apikey"])
 
 # Load our custom model
 nlp_ner = spacy.load("./NER/model-best")
@@ -39,12 +39,12 @@ predefined_questions = [
     'What are some of your favorite foods?',
     'Are there any foods you dislike or avoid?',
     'Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?',
-    'Do you have any dietary needs or food restrictions? (milk, peanuts, gluten, etc.)',
+    'Do you have any dietary needs or food restrictions? (milk allergy, peanuts allergy, etc.)',
 ]
 
 # Initialize the session state variables
 if "messages" not in st.session_state:
-    st.session_state.messages= [{"role": "assistant", "content": "Let's start! Type anything in the chatbox to begin."}]
+    st.session_state.messages= [{"role": "assistant", "content": "Hello there! Type anything in the chatbox to begin.."}]
 if "user_profile" not in st.session_state:  
     st.session_state.user_profile = user_profile
 # Questions that have been asked
@@ -54,7 +54,7 @@ if "questions" not in st.session_state:
 if "predefined_questions" not in st.session_state:
     st.session_state.predefined_questions = predefined_questions
 if "current_question" not in st.session_state:
-    st.session_state.current_question = "Let's start! Type anything in the chatbox to begin."
+    st.session_state.current_question = "Hello there! Type anything in the chatbox to begin."
 # User responses
 if 'responses' not in st.session_state:
     # st.session_state.questions.extend(predefined_questions) # ??
@@ -127,31 +127,33 @@ def update_profile_with_entities(liked_items, disliked_items, eating_preferences
     st.session_state.user_profile["age"] = age
 
 # Function used to get the response from the OpenAI API
-def get_openai_response(prompt):
-    # system = [{"role": "system", "content": "You are a customer onboarding assistant that asks ALL the predefined questions one by one. Wait for the user to answer one question before proceeding. Do not ask the same question more than once unless the key-value pair in the user profile corresponsing to the question is empty or irrelevant. When all predefined questions are answered, thank the user."}]
-    # chat_history = st.session_state.messages
-    # user = [{"role": "user", "content": prompt}]
-    # response = client.chat.completions.create(
-    #     messages=system + chat_history + user,
-    #     model="gpt-3.5-turbo",
-    #     max_tokens=100,
-    #     top_p=0.9,
-    # )
-    # return response.choices[0].message.content
+def get_meal_plan_suggestion(prompt):
+    system = [{"role": "system", "content": "You are a meal planning assistant that creates a 5-days meal planning based on a given user information."}]
+    chat_history = st.session_state.messages
+    user = [{"role": "user", "content": prompt}]
+    response = client.chat.completions.create(
+        messages=system + chat_history + user,
+        model="gpt-3.5-turbo",
+        max_tokens=100,
+        top_p=0.9,
+    )
+    return response.choices[0].message.content
+
+def handle_response(prompt):
     if st.session_state.questions:
         return st.session_state.questions.pop(0)
-    return "Thank you! All questions have been answered."
+    return get_meal_plan_suggestion(prompt) # Call the recipe recommendation function when all questions have been asked
 
 # Generate the next question
 def generate_next_question(profile):
     chat_history = st.session_state.messages
     profile_prompt = f"Our current user profile is: {profile}\n"
-    questions_prompt = f"Based on the given user profile and the chat history {chat_history}, ask the listed questions in order 1 by 1 only if the matching property is still empty or irrelevant:\n"
+    questions_prompt = f"Based on the given user profile and the chat history {chat_history}, provide a 7-day meal plan to the user:\n"
     for question in st.session_state.predefined_questions:
         questions_prompt += f"- {question}\n"
 
     prompt = profile_prompt + questions_prompt
-    return get_openai_response(prompt)
+    return handle_response(prompt)
     # Comment: Add a condition to stop the Q and A here
 
 # Function to parse health goals from the response
@@ -230,10 +232,10 @@ def update_profile_with_response(question, response):
         st.session_state.user_profile["top_health_goals"].extend(parse_health_goals(response))
     elif "favorite foods" or "foods you like" in question.lower():
         liked_items, _, _, _, _, _ = extract_entities(response)
-        st.session_state.user_profile["liked_foods"].extend(liked_items)
+        # st.session_state.user_profile["liked_foods"].extend(liked_items)
     elif "foods you dislike" or "foods you avoid" in question.lower():
         _, disliked_items, _, _, _, _ = extract_entities(response)
-        st.session_state.user_profile["disliked_foods"].extend(disliked_items)
+        # st.session_state.user_profile["disliked_foods"].extend(disliked_items)
     elif "specific diet" in question.lower():
         _, _, eating_preferences, _, _, _ = extract_entities(response)
         st.session_state.user_profile["eating_preferences"].extend(eating_preferences)
@@ -250,7 +252,7 @@ def on_input_change():
     # This line allows the user profile to be updated regardless of the current question
     # FOR NOW DOES NOT UPDATE eating_preferences, name and age
     liked_items, disliked_items, eating_preferences, special_needs, name, age = extract_entities(user_input)
-    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, name, age)
+    update_profile_with_entities(liked_items, disliked_items, eating_preferences, special_needs, st.session_state.user_profile["name"], st.session_state.user_profile["age"])
 
     # Get the current question and update the user profile based on that current question and provided input
     current_question = st.session_state.current_question
@@ -268,7 +270,6 @@ def on_input_change():
 
     # Save data to a JSON file
     save_data()
-
 
 
 st.title("FoodEasy Assistant")
@@ -292,9 +293,9 @@ with st.container():
 sidebar = st.sidebar
 sidebar.markdown("Current question:")
 sidebar.markdown(st.session_state.current_question)
+sidebar.markdown("Gathered user information:")
+sidebar.write(st.session_state.user_profile)
 sidebar.markdown("Your responses:")
 sidebar.write(st.session_state.responses)
 sidebar.markdown("Questions:")
 sidebar.write(st.session_state.questions)
-sidebar.markdown("Gathered user information:")
-sidebar.write(st.session_state.user_profile)

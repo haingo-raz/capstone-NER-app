@@ -1,25 +1,46 @@
 {
     "user_profile": {
-        "name": "nami",
-        "age": 25,
+        "name": "Paul",
+        "age": "33",
         "top_health_goals": [
-            "Lose weight"
+            "Lose weight",
+            "Save money"
         ],
-        "have_breakfast": "yes",
-        "breakfast_preparation_time": null,
-        "liked_foods": [],
-        "disliked_foods": [],
-        "eating_preferences": [],
-        "dietary_needs": []
+        "have_breakfast": true,
+        "breakfast_preparation_time": "20 minutes",
+        "liked_foods": [
+            "pork",
+            "cheese"
+        ],
+        "disliked_foods": [
+            "tomato",
+            "carrots"
+        ],
+        "eating_preferences": [
+            "Haingo",
+            "vegetarian"
+        ],
+        "special_needs": [
+            "shellfish,",
+            "allergic to milk"
+        ]
     },
     "messages": [
+        {
+            "role": "assistant",
+            "content": "Hello there! Type anything in the chatbox to begin.."
+        },
+        {
+            "role": "user",
+            "content": "Hi"
+        },
         {
             "role": "assistant",
             "content": "What is your name?"
         },
         {
             "role": "user",
-            "content": "nami"
+            "content": "My name is Haingo"
         },
         {
             "role": "assistant",
@@ -27,7 +48,7 @@
         },
         {
             "role": "user",
-            "content": "25"
+            "content": "I am 22"
         },
         {
             "role": "assistant",
@@ -35,7 +56,7 @@
         },
         {
             "role": "user",
-            "content": "1"
+            "content": "1 and 2"
         },
         {
             "role": "assistant",
@@ -43,33 +64,65 @@
         },
         {
             "role": "user",
-            "content": "yes"
+            "content": "yes I do"
         },
         {
             "role": "assistant",
             "content": "How much time do you spend making breakfast?"
         },
         {
+            "role": "user",
+            "content": "20 minutes"
+        },
+        {
             "role": "assistant",
-            "content": "Please provide a valid number of minutes (0-1439)."
+            "content": "What are some of your favorite foods?"
         },
         {
             "role": "user",
-            "content": "spicy food"
+            "content": "I like eggs, shellfish, and meat, pork and cheese"
+        },
+        {
+            "role": "assistant",
+            "content": "Are there any foods you dislike or avoid?"
+        },
+        {
+            "role": "user",
+            "content": "I hate tomato and carrots"
+        },
+        {
+            "role": "assistant",
+            "content": "Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?"
+        },
+        {
+            "role": "user",
+            "content": "I am vegetarian"
+        },
+        {
+            "role": "assistant",
+            "content": "Do you have any dietary needs or food restrictions? (milk allergy, peanuts allergy, etc.)"
+        },
+        {
+            "role": "user",
+            "content": "I am allergic to milk"
+        },
+        {
+            "role": "assistant",
+            "content": "Here is your 5-day personalized meal plan:\n\n**Day 1:**\n- Breakfast: Scrambled eggs with cheese and saut\u00e9ed spinach\n- Lunch: Grilled vegetable and cheese sandwich with a side salad\n- Dinner: Vegetarian stir-fry with tofu, mixed vegetables, and soy sauce\n\n**Day 2:**\n- Breakfast: Greek yogurt with berries and granola\n- Lunch: Quinoa salad with roasted vegetables and feta cheese\n- Dinner: Stuffed"
         }
     ],
     "responses": [
-        "nami",
-        "25",
-        "1",
-        "yes",
-        "spicy food"
+        "Hi",
+        "My name is Haingo",
+        "I am 22",
+        "1 and 2",
+        "yes I do",
+        "20 minutes",
+        "I like eggs, shellfish, and meat, pork and cheese",
+        "I hate tomato and carrots",
+        "I am vegetarian",
+        "I am allergic to milk"
     ],
-    "current_question": "How much time do you spend making breakfast?",
-    "questions": [
-        "What are some of your favorite foods?",
-        "Are there any foods you dislike or avoid?",
-        "Do you follow any specific diet or have any eating preferences (e.g., vegetarian, vegan, keto)?",
-        "Do you have any dietary needs or food restrictions (e.g., milk, peanuts, gluten)?"
-    ]
+    "current_question": "Here is your 5-day personalized meal plan:\n\n**Day 1:**\n- Breakfast: Scrambled eggs with cheese and saut\u00e9ed spinach\n- Lunch: Grilled vegetable and cheese sandwich with a side salad\n- Dinner: Vegetarian stir-fry with tofu, mixed vegetables, and soy sauce\n\n**Day 2:**\n- Breakfast: Greek yogurt with berries and granola\n- Lunch: Quinoa salad with roasted vegetables and feta cheese\n- Dinner: Stuffed",
+    "questions": []
 }
