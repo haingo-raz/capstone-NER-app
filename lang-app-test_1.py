@@ -147,20 +147,13 @@ workflow.add_edge("prompt", END)
 workflow.add_edge(START, "info")
 graph = workflow.compile(checkpointer=memory)
 
+def on_input_change():
+    user_input = st.session_state.user_input
+    st.session_state['messages'].append({"role": "user", "content": user_input})
+
 # Initialize Streamlit session state
 if "messages" not in st.session_state:
     st.session_state.messages= [{"role": "assistant", "content": "Let's start! Type anything in the chatbox to begin."}]
-
-if "user_profile" not in st.session_state:
-    st.session_state.user_profile = {
-        "name": "",
-        "age": "",
-        "liked_foods": [],
-        "disliked_foods": [],
-        "special_needs": [],
-        "eating_preferences": []
-    }
-
 
 # Streamlit UI
 st.title("FoodEasy Assistant")
@@ -170,31 +163,33 @@ with st.container(height=410):
     for message in st.session_state['messages']:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-
 # User input
-prompt = st.chat_input("Type your response here..., use (Q or q) to quit", key='user_input')
+prompt = st.chat_input("Type your response here..., use (Q or q) to quit", on_submit=on_input_change, key='user_input')
 
 config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 if prompt:
+    # Extract JSON data from prompt_gen_chain
+
+    json_data = get_prompt_messages(st.session_state['messages'])
+
     # Process user input
     if prompt == 'q' or prompt == 'Q':
         print("AI: Byebye")
-        user_profile_json = json.dumps(st.session_state.user_profile, indent=4)
-        print(user_profile_json)
+        print(json_data)
         st.stop()
 
     output = None
     for output in graph.stream([HumanMessage(content=prompt)], config=config, stream_mode="updates"):
         last_message = next(iter(output.values()))
 
-    st.session_state['messages'].append({"role": "user", "content": prompt})
+
     st.session_state['messages'].append({"role": "assistant", "content": last_message.content})
 
     if output and "prompt" in output:
         st.session_state['messages'].append({"role": "assistant", "content": "Done"})
 
     # Display user profile
-sidebar = st.sidebar
-sidebar.markdown("Gathered user information:")
-sidebar.write(st.session_state.user_profile)
-sidebar.write(st.session_state['messages'])
+    sidebar = st.sidebar
+    sidebar.markdown("Gathered user information:")
+    sidebar.write(json_data)
+    sidebar.write(st.session_state['messages'])
