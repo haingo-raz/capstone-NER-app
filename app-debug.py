@@ -5,6 +5,13 @@ import re
 from textblob import TextBlob
 import json
 import re
+from st_cookies_manager import EncryptedCookieManager
+
+cookies = EncryptedCookieManager(
+    # This prefix will get added to all your cookie names.
+    prefix="foodeasy/st-cookies-manager/",
+    password= st.secrets["cookies_password"],
+)
 
 # Set your OpenAI API key
 client = OpenAI(api_key=st.secrets["openai_apikey"])
@@ -59,6 +66,8 @@ if "current_question" not in st.session_state:
 if 'responses' not in st.session_state:
     # st.session_state.questions.extend(predefined_questions) # ??
     st.session_state.responses = []
+if "access_granted" not in st.session_state:
+    st.session_state.access_granted = cookies.get("access_granted", "Denied")
 
 # Function to save user profile and chat history to a JSON file
 def save_data():
@@ -128,13 +137,13 @@ def update_profile_with_entities(liked_items, disliked_items, eating_preferences
 
 # Function used to get the response from the OpenAI API
 def get_meal_plan_suggestion(prompt):
-    system = [{"role": "system", "content": "You are a meal planning assistant that creates a 5-days meal planning based on a given user information."}]
+    system = [{"role": "system", "content": "You are a meal planning assistant that creates a 5-days (five) meal planning based on a given user information."}]
     chat_history = st.session_state.messages
     user = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
         messages=system + chat_history + user,
         model="gpt-3.5-turbo",
-        max_tokens=100,
+        max_tokens=1500,
         top_p=0.9,
     )
     return response.choices[0].message.content
@@ -148,7 +157,7 @@ def handle_response(prompt):
 def generate_next_question(profile):
     chat_history = st.session_state.messages
     profile_prompt = f"Our current user profile is: {profile}\n"
-    questions_prompt = f"Based on the given user profile and the chat history {chat_history}, provide a 7-day meal plan to the user:\n"
+    questions_prompt = f"Based on the given user profile and the chat history {chat_history}, provide a 5-day (five) meal plan to the user, only add breakfast suggestion if have_breakfast:true:\n"
     for question in st.session_state.predefined_questions:
         questions_prompt += f"- {question}\n"
 
@@ -278,24 +287,42 @@ Hello! Welcome to FoodEasy. We help you create personalized meal plans based on 
 Please provide the following details to get started.
 """)
 
-# Where the conversation is displayed
-with st.container(height=420):
-    # Display chat messages
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-    
-# The chat input component
-with st.container():
-    prompt = st.chat_input("Type your response here...", on_submit=on_input_change, key="user_input")
+# Wait for cookies to be ready
+if not cookies.ready():
+    st.stop()
 
-# Demonstration purposes in the sidebar
-sidebar = st.sidebar
-sidebar.markdown("Current question:")
-sidebar.markdown(st.session_state.current_question)
-sidebar.markdown("Gathered user information:")
-sidebar.write(st.session_state.user_profile)
-sidebar.markdown("Your responses:")
-sidebar.write(st.session_state.responses)
-sidebar.markdown("Questions:")
-sidebar.write(st.session_state.questions)
+with st.container():
+    if st.session_state.access_granted == "Denied":
+        code_input = st.text_input("Enter provided PIN to access the chatbot", type="password")
+        if code_input:
+            if code_input == st.secrets["access_code"]:
+                st.session_state.access_granted = "Granted"
+                cookies['access_granted'] = "Granted"
+                cookies.save()
+                st.rerun()
+            else:
+                st.error("Access denied! Please enter the correct PIN to access the chatbot.")
+                st.stop()
+
+    # Display chatbot interface if access is granted
+    if st.session_state.access_granted == "Granted":
+        with st.container(height=405):
+            # Display chat messages
+            for message in st.session_state.messages:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+        
+        # The chat input component
+        with st.container():
+            prompt = st.chat_input("Type your response here...", on_submit=on_input_change, key="user_input")
+
+        # Demonstration purposes in the sidebar
+        sidebar = st.sidebar
+        sidebar.markdown("Current question:")
+        sidebar.markdown(st.session_state.current_question)
+        sidebar.markdown("Gathered user information:")
+        sidebar.write(st.session_state.user_profile)
+        sidebar.markdown("Your responses:")
+        sidebar.write(st.session_state.responses)
+        sidebar.markdown("Questions:")
+        sidebar.write(st.session_state.questions)
