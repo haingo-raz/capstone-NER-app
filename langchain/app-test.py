@@ -233,5 +233,5 @@ def run_chatbot():
     
     st.button("Submit")
 
-if _name_ == "_main_":
-    run_chatbot()
+if __name__ == "_main_":
+    run_chatbot()
