@@ -17,18 +17,18 @@ This project focuses on developing an AI-driven chatbot designed to guide users 
 # Methodology
 ## Data Collection
 - Food preferences and special needs data were manually collected from sources such as the US Department of Health, the Mayo Clinic, and the Cleveland Clinic allergy disease webpages.
-- Additional food data was collected through web scraping using the Beautiful Soup library. The code is available in the [web-scraping folder](/web-scraping/).
+- Additional food data was collected through web scraping using the Beautiful Soup library. The code is available in the [web-scraping](/web-scraping/) folder.
 
 ## Data Preparation
 - The collected entities were incorporated into sentences. Two different files have been created for training and validation purposes.
 - A [NER Text Annotator tool](https://tecoholic.github.io/ner-annotator/) was used to annotate the data and identify different entities such as `FOOD`, `SPECIALNEEDS`, and `PREFERENCES` in the training and validation sets.
-- The exported JSON files from the tool will be used as the training and validation data to create the SpaCy NER model. These files, `all_train_data.json` and `all_validation_data.json`, can be found in the [NER folder](/NER/data/).
+- The exported JSON files from the tool will be used as the training and validation data to create the SpaCy NER model. These files, `all_train_data.json` and `all_validation_data.json`, can be found in the [NER](/NER/data/) folder.
 
 ## Model Creation
-- The SpaCy NER model is created by running the [spaCy_model.ipynb file](/NER/spaCy_model.ipynb).
+- The SpaCy NER model is created by running the [spaCy_model.ipynb](/NER/spaCy_model.ipynb) file.
 - The JSON training and validation data are converted into SpaCy objects.
 - The model is trained on the created SpaCy objects using a generated config file.
-- The NER model is saved in the [model-best folder](/NER/model-best/).
+- The NER model is saved in the [model-best](/NER/model-best/) folder.
 
 ## Inference
 - The accuracy of the NER model can be tested by loading the `model-best` and testing examples of user inputs. See examples in [test/model-test.ipynb](/test/model-test.ipynb).
